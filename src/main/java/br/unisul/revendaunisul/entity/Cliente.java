@@ -2,6 +2,7 @@ package br.unisul.revendaunisul.entity;
 
 import java.time.LocalDate;
 
+import javax.annotation.MatchesPattern;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 @Data
 public class Cliente {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
@@ -31,18 +32,21 @@ public class Cliente {
 	@NotBlank(message = "O nome completo n�o deve ser um espa�o em branco")
 	@Column(name = "nm_completo")
 	private String nomeCompleto;
-	
-	@Size(max = 50, message = "O cpf n�o deve conter mais de 50 caracteres")
+
+
+	@MatchesPattern("/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/")
+	@Size(max = 14, message = "O cpf n�o deve conter mais de 50 caracteres")
 	@NotBlank(message = "O cpf n�o deve ser um espa�o em branco")
 	@Column(name = "cpf")
 	private String cpf;
-	
-	@NotNull(message = "A data de nascimento não deve ser nula")
+
+	@NotNull(message = "A data de nascimento n�o deve ser nula")
 	@Column(name = "dt_nascimento")
 	private LocalDate dataDeNascimento;
-	
-	@Size(max = 15, message = "O telefone não deve conter mais de 15 caracteres")
-	@NotBlank(message = "O telefone não deve ser um espao em branco")
+
+	@MatchesPattern("/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/")
+	@Size(max = 15, message = "O telefone n�o deve conter mais de 15 caracteres")
+	@NotBlank(message = "O telefone n�o deve ser um espa�o em branco")
 	@Column(name = "telefone")
 	private String telefone;
 

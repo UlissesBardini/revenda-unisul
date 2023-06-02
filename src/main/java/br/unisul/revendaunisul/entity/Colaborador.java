@@ -43,8 +43,8 @@ public class Colaborador {
 	
 	@Size(min=14, max = 14, message = "O cpf deve conter exatamente 14 caracteres")
 	@NotBlank(message = "O cpf não deve ser um espaço em branco")
-	@Column(name = "cpf")
 	@MatchesPattern("/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/")
+	@Column(name = "cpf")
 	private String cpf;
 	
 	@Past(message = "A data de nascimento não deve ser posterior a data atual")
