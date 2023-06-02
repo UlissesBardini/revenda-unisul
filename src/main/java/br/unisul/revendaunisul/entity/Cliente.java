@@ -37,12 +37,12 @@ public class Cliente {
 	@Column(name = "cpf")
 	private String cpf;
 	
-	@NotNull(message = "A data de nascimento n�o deve ser nula")
+	@NotNull(message = "A data de nascimento não deve ser nula")
 	@Column(name = "dt_nascimento")
 	private LocalDate dataDeNascimento;
 	
-	@Size(max = 15, message = "O telefone n�o deve conter mais de 15 caracteres")
-	@NotBlank(message = "O telefone n�o deve ser um espa�o em branco")
+	@Size(max = 15, message = "O telefone não deve conter mais de 15 caracteres")
+	@NotBlank(message = "O telefone não deve ser um espao em branco")
 	@Column(name = "telefone")
 	private String telefone;
 

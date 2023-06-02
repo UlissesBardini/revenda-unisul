@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -32,6 +33,7 @@ public class Colaborador {
 	
 	@OneToOne
 	@NotNull(message = "O usuário não deve ser nulo")
+	@JoinColumn(name="usuario")
 	private Usuario usuario;
 
 	@Size(max = 50, message = "O nome completo não deve conter mais de 50 caracteres")
