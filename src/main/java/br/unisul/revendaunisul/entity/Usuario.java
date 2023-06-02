@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import br.unisul.revendaunisul.enums.Perfil;
@@ -29,17 +30,17 @@ public class Usuario {
 	
 	@Column(name = "perfil")
 	@Enumerated(value = EnumType.STRING)
-	@NotBlank(message = "O perfil do usuário não deve estar em branco")
+	@NotNull(message = "O perfil do usuÃ¡rio nÃ£o pode ser nulo")
 	private Perfil perfil;
 
 	@Column(name = "login")
-	@Size(max = 50, message = "O login do usuário não deve conter mais de 50 caracteres")
-	@NotBlank(message = "O login do usuário não deve estar em branco")
+	@Size(max = 50, message = "O login do usuÃ¡rio nÃ£o deve conter mais de 50 caracteres")
+	@NotBlank(message = "O login do usÃ¡rio nÃ£o deve estar em branco")
 	private String login;
 	
 	@Column(name = "senha")
-	@Size(max = 50, message = "A senha do usuário não deve conter mais de 50 caracteres")
-	@NotBlank(message = "A senha do usuário não deve estar em branco")
+	@Size(max = 50, message = "A senha do usuÃ¡rio nÃ£o deve conter mais de 50 caracteres")
+	@NotBlank(message = "A senha do usuÃ¡rio nÃ£o deve estar em branco")
 	private String senha;
 	
 }

@@ -2,6 +2,7 @@ package br.unisul.revendaunisul.entity;
 
 import java.time.LocalDate;
 
+import javax.annotation.MatchesPattern;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,31 +31,33 @@ public class Colaborador {
 	private Integer id;
 	
 	@OneToOne
-	@NotNull(message = "O usu·rio n„o deve ser nulo")
+	@NotNull(message = "O usu√°rio n√£o deve ser nulo")
 	private Usuario usuario;
 
-	@Size(max = 50, message = "O nome completo n„o deve conter mais de 50 caracteres")
-	@NotBlank(message = "O nome completo n„o deve ser um espaÁo em branco")
+	@Size(max = 50, message = "O nome completo n√£o deve conter mais de 50 caracteres")
+	@NotBlank(message = "O nome completo n√£o deve ser um espa√ßo em branco")
 	@Column(name = "nm_completo")
 	private String nomeCompleto;
 	
-	@Size(max = 14, message = "O cpf n„o deve conter mais de 14 caracteres")
-	@NotBlank(message = "O cpf n„o deve ser um espaÁo em branco")
+	@Size(min=14, max = 14, message = "O cpf deve conter exatamente 14 caracteres")
+	@NotBlank(message = "O cpf n√£o deve ser um espa√ßo em branco")
 	@Column(name = "cpf")
+	@MatchesPattern("/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/")
 	private String cpf;
 	
-	@Past(message = "A data de nascimento n„o deve ser posterior a data atual")
-	@NotNull(message = "A data de nascimento n„o deve ser nula")
+	@Past(message = "A data de nascimento n√£o deve ser posterior a data atual")
+	@NotNull(message = "A data de nascimento n√£o deve ser nula")
 	@Column(name = "dt_nascimento")
 	private LocalDate dataDeNascimento;
 	
-	@Past(message = "A data de cadastro n„o deve ser posterior a data atual")
-	@NotNull(message = "A data de cadastro n„o deve ser nula")
+	@Past(message = "A data de cadastro n√£o deve ser posterior a data atual")
+	@NotNull(message = "A data de cadastro n√£o deve ser nula")
 	@Column(name = "dt_cadastro")
 	private LocalDate dataDeCadastro;
 	
-	@Size(max = 14, message = "O telefone n„o deve conter mais de 14 caracteres")
-	@NotBlank(message = "O telefone n„o deve ser nulo")
+	@Size(min = 14, max = 14, message = "O telefone deve conter exatamente 14 caracteres")
+	@NotBlank(message = "O telefone n√£o deve ser nulo")
 	@Column(name = "telefone")
+	@MatchesPattern("/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/")
 	private String telefone;
 }

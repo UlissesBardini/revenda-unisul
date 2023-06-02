@@ -16,7 +16,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity(name = "Cliente")
-@Table(name = "colaboradores")
+@Table(name = "clientes")
 @EqualsAndHashCode
 @Data
 public class Cliente {
@@ -27,22 +27,22 @@ public class Cliente {
 	@Column(name = "id")
 	private Integer id;
 
-	@Size(max = 50, message = "O nome completo não deve conter mais de 50 caracteres")
-	@NotBlank(message = "O nome completo não deve ser um espaço em branco")
+	@Size(max = 50, message = "O nome completo nï¿½o deve conter mais de 50 caracteres")
+	@NotBlank(message = "O nome completo nï¿½o deve ser um espaï¿½o em branco")
 	@Column(name = "nm_completo")
 	private String nomeCompleto;
 	
-	@Size(max = 50, message = "O cpf não deve conter mais de 50 caracteres")
-	@NotBlank(message = "O cpf não deve ser um espaço em branco")
+	@Size(max = 50, message = "O cpf nï¿½o deve conter mais de 50 caracteres")
+	@NotBlank(message = "O cpf nï¿½o deve ser um espaï¿½o em branco")
 	@Column(name = "cpf")
 	private String cpf;
 	
-	@NotNull(message = "A data de nascimento não deve ser nula")
+	@NotNull(message = "A data de nascimento nï¿½o deve ser nula")
 	@Column(name = "dt_nascimento")
 	private LocalDate dataDeNascimento;
 	
-	@Size(max = 15, message = "O telefone não deve conter mais de 15 caracteres")
-	@NotBlank(message = "O telefone não deve ser um espaço em branco")
+	@Size(max = 15, message = "O telefone nï¿½o deve conter mais de 15 caracteres")
+	@NotBlank(message = "O telefone nï¿½o deve ser um espaï¿½o em branco")
 	@Column(name = "telefone")
 	private String telefone;
 
