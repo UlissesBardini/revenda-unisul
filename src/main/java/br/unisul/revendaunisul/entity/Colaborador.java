@@ -2,6 +2,7 @@ package br.unisul.revendaunisul.entity;
 
 import java.time.LocalDate;
 
+import javax.annotation.MatchesPattern;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,6 +39,7 @@ public class Colaborador {
 	@Column(name = "nm_completo")
 	private String nomeCompleto;
 	
+	@MatchesPattern("/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/")
 	@Size(max = 14, message = "O cpf não deve conter mais de 14 caracteres")
 	@NotBlank(message = "O cpf não deve ser um espaço em branco")
 	@Column(name = "cpf")
@@ -53,8 +55,9 @@ public class Colaborador {
 	@Column(name = "dt_cadastro")
 	private LocalDate dataDeCadastro;
 	
-	@Size(max = 14, message = "O telefone não deve conter mais de 14 caracteres")
-	@NotBlank(message = "O telefone não deve ser nulo")
+	@MatchesPattern("/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/")
+	@Size(max = 15, message = "O telefone não deve conter mais de 15 caracteres")
+	@NotBlank(message = "O telefone não deve ser um espaço em branco")
 	@Column(name = "telefone")
 	private String telefone;
 }
