@@ -11,8 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
+import br.unisul.revendaunisul.validation.AoAlterar;
+import br.unisul.revendaunisul.validation.AoInserir;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,13 +29,14 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Column(name = "id")
+	@Null(message="O id deve ser nulo para inserção", groups = AoInserir.class)
+	@NotNull(message="O id não pode ser nulo para alteração", groups = AoAlterar.class)
 	private Integer id;
 
 	@Size(max = 50, message = "O nome completo n�o deve conter mais de 50 caracteres")
 	@NotBlank(message = "O nome completo n�o deve ser um espa�o em branco")
 	@Column(name = "nm_completo")
 	private String nomeCompleto;
-
 
 	@MatchesPattern("/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/")
 	@Size(max = 14, message = "O cpf n�o deve conter mais de 50 caracteres")

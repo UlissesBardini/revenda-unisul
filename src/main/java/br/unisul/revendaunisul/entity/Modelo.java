@@ -1,5 +1,7 @@
 package br.unisul.revendaunisul.entity;
 
+import java.beans.Transient;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,11 +14,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 import br.unisul.revendaunisul.enums.Combustivel;
 import br.unisul.revendaunisul.enums.TipoDeVeiculo;
 import br.unisul.revendaunisul.enums.Transmissao;
+import br.unisul.revendaunisul.validation.AoAlterar;
+import br.unisul.revendaunisul.validation.AoInserir;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,7 +35,8 @@ public class Modelo {
 	@Column(name="id")
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@NotNull(message="O id do modelo não pode ser nulo")
+	@Null(message="O id deve ser nulo para inserção", groups = AoInserir.class)
+	@NotNull(message="O id não pode ser nulo para alteração", groups = AoAlterar.class)
 	private Integer id;
 	
 	@ManyToOne
@@ -57,5 +63,13 @@ public class Modelo {
 	@Enumerated(EnumType.STRING)
 	@NotNull(message="O combustível do modelo não pode ser nulo")
 	private Combustivel combustivel;
+	
+	@Transient
+	public String toString() {
+		return this.marca.getNome() + " "
+			 + this.nome + " "
+			 + this.transmissao.toString()+ " " 
+			 + this.combustivel.toString();
+	}
 	
 }

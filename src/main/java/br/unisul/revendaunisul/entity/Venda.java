@@ -14,9 +14,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
 
 import br.unisul.revendaunisul.enums.FormaDePagamento;
+import br.unisul.revendaunisul.validation.AoAlterar;
+import br.unisul.revendaunisul.validation.AoInserir;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -32,6 +35,8 @@ public class Venda {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Column(name = "id")
+	@Null(message="O id deve ser nulo para inserção", groups = AoInserir.class)
+	@NotNull(message="O id não pode ser nulo para alteração", groups = AoAlterar.class)
 	private Integer id;
 	
 	@ManyToOne
