@@ -24,7 +24,7 @@ public class InitApp {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							//Iniciar aplicação aqui
+							//Iniciar aplicaï¿½ï¿½o aqui
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
