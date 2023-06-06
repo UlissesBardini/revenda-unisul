@@ -2,7 +2,6 @@ package br.unisul.revendaunisul.entity;
 
 import java.beans.Transient;
 
-import javax.annotation.MatchesPattern;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -55,7 +54,6 @@ public class Veiculo {
 	
 	@Size(max=8)
 	@Column(name="placa")
-	@MatchesPattern("/[A-Z]{3}-[0-9][0-9A-Z][0-9]{2}/")
 	@NotEmpty(message = "A placa do veículo é obrigatória")
 	private String placa;
 	

@@ -38,7 +38,7 @@ public class Colaborador {
 
 	@OneToOne
 	@NotNull(message = "O usuário não deve ser nulo")
-	@JoinColumn(name = "usuario")
+	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 
 	@Size(max = 50, message = "O nome completo não deve conter mais de 50 caracteres")
