@@ -1,5 +1,6 @@
 package br.unisul.revendaunisul.service;
 
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -18,30 +19,34 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuariosRepository repository;
-	
+
+	@Autowired
+	private EntityManager em;
+
 	@Validated(AoInserir.class)
-	public Usuario inserir(
-			@NotNull(message="O usuário não pode ser nulo")
-			@Valid Usuario novoUsuario) {
+	public Usuario inserir(@NotNull(message = "O usuário não pode ser nulo") @Valid Usuario novoUsuario) {
 		return this.repository.save(novoUsuario);
 	}
-	
+
 	@Validated(AoAlterar.class)
-	public Usuario alterar(
-			@NotNull(message="O usuário não pode ser nulo")
-			@Valid Usuario usuario) {
-		return this.repository.save(usuario);
+	public Usuario alterar(@NotNull(message = "O usuário não pode ser nulo") @Valid Usuario usuarioSalvo) {
+		this.em.detach(repository.saveAndFlush(usuarioSalvo));
+		this.em.clear();
+		return usuarioSalvo;
 	}
-	
-	public Usuario buscarPor(
-			@NotNull(message = "O id do usuário não pode ser nulo") Integer id) {
-		return repository.findById(id).orElseThrow(
-				() -> new IllegalArgumentException("O usuário com id '" + id + "' não existe."));
+
+	public Usuario buscarPor(@NotNull(message = "O id do usuário não pode ser nulo") Integer id) {
+		return repository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("O usuário com id '" + id + "' não existe."));
 	}
-	
-	public void excluirPorId(
-			@NotNull(message = "O id do usuário não pode ser nulo") Integer id) {
+
+	public void excluirPorId(@NotNull(message = "O id do usuário não pode ser nulo") Integer id) {
 		repository.deleteById(id);
 	}
-	
+
+	// sem regras pois valido no input da tela
+	public Usuario buscarLogin(String login, String senha) {
+		return repository.buscarLogin(login, senha);
+	}
+
 }

@@ -2,7 +2,6 @@ package br.unisul.revendaunisul.entity;
 
 import java.time.LocalDate;
 
-import javax.annotation.MatchesPattern;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,8 +31,8 @@ public class Colaborador {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Column(name = "id")
-	@Null(message="O id deve ser nulo para inserção", groups = AoInserir.class)
-	@NotNull(message="O id não pode ser nulo para alteração", groups = AoAlterar.class)
+	@Null(message = "O id deve ser nulo para inserção", groups = AoInserir.class)
+	@NotNull(message = "O id não pode ser nulo para alteração", groups = AoAlterar.class)
 	private Integer id;
 
 	@OneToOne
@@ -48,7 +47,7 @@ public class Colaborador {
 
 	@Size(min = 14, max = 14, message = "O cpf deve conter exatamente 14 caracteres")
 	@NotBlank(message = "O cpf não deve ser um espaço em branco")
-	@MatchesPattern("/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/")
+	//@MatchesPattern("/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/")
 	@Column(name = "cpf")
 	private String cpf;
 
@@ -57,7 +56,7 @@ public class Colaborador {
 	@Column(name = "dt_nascimento")
 	private LocalDate dataDeNascimento;
 
-	@Past(message = "A data de cadastro não deve ser posterior a data atual")
+	//@Past(message = "A data de cadastro não deve ser posterior a data atual")
 	@NotNull(message = "A data de cadastro não deve ser nula")
 	@Column(name = "dt_cadastro")
 	private LocalDate dataDeCadastro;
@@ -65,6 +64,6 @@ public class Colaborador {
 	@Size(min = 14, max = 14, message = "O telefone deve conter exatamente 14 caracteres")
 	@NotBlank(message = "O telefone não deve ser nulo")
 	@Column(name = "telefone")
-	@MatchesPattern("/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/")
+	//@MatchesPattern("/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/")
 	private String telefone;
 }

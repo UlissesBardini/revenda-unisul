@@ -20,27 +20,21 @@ public class ModeloService {
 	private ModelosRepository repository;
 
 	@Validated(AoInserir.class)
-	public Modelo inserir(
-			@NotNull(message="O modelo não pode ser nulo")
-			@Valid Modelo novoModelo) {
+	public Modelo inserir(@NotNull(message = "O modelo não pode ser nulo") @Valid Modelo novoModelo) {
 		return this.repository.save(novoModelo);
 	}
-	
+
 	@Validated(AoAlterar.class)
-	public Modelo alterar(
-			@NotNull(message="O modelo não pode ser nulo")
-			@Valid Modelo modelo) {
+	public Modelo alterar(@NotNull(message = "O modelo não pode ser nulo") @Valid Modelo modelo) {
 		return this.repository.save(modelo);
 	}
 
-	public Modelo buscarPor(
-			@NotNull(message = "O id do modelo não pode ser nulo") Integer id) {
-		return repository.findById(id).orElseThrow(
-				() -> new IllegalArgumentException("O modelo com id '" + id + "' não existe."));
+	public Modelo buscarPor(@NotNull(message = "O id do modelo não pode ser nulo") Integer id) {
+		return repository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("O modelo com id '" + id + "' não existe."));
 	}
 
-	public void excluirPorId(
-			@NotNull(message = "O id do modelo não pode ser nulo") Integer id) {
+	public void excluirPorId(@NotNull(message = "O id do modelo não pode ser nulo") Integer id) {
 		repository.deleteById(id);
 	}
 }

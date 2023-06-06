@@ -26,62 +26,60 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@Table(name="veiculos")
-@Entity(name="Veiculo")
+@Table(name = "veiculos")
+@Entity(name = "Veiculo")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Veiculo {
 
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Null(message="O id deve ser nulo para inserção", groups = AoInserir.class)
-	@NotNull(message="O id não pode ser nulo para alteração", groups = AoAlterar.class)
+	@Null(message = "O id deve ser nulo para inserção", groups = AoInserir.class)
+	@NotNull(message = "O id não pode ser nulo para alteração", groups = AoAlterar.class)
 	private Integer id;
-	
+
 	@ManyToOne
-	@JoinColumn(name="id_modelo")
-	@NotNull(message="O modelo do veículo não pode ser nulo")
+	@JoinColumn(name = "id_modelo")
+	@NotNull(message = "O modelo do veículo não pode ser nulo")
 	private Modelo modelo;
-	
-	@Column(name="ano")
-	@Positive(message="O ano deve ser positivo")
+
+	@Column(name = "ano")
+	@Positive(message = "O ano deve ser positivo")
 	private int ano;
-	
-	@Size(max=20)
-	@Column(name="cor")
+
+	@Size(max = 20)
+	@Column(name = "cor")
 	@NotEmpty(message = "A cor do veículo é obrigatória")
 	private String cor;
-	
-	@Size(max=8)
-	@Column(name="placa")
+
+	@Size(max = 8)
+	@Column(name = "placa")
 	@MatchesPattern("/[A-Z]{3}-[0-9][0-9A-Z][0-9]{2}/")
 	@NotEmpty(message = "A placa do veículo é obrigatória")
 	private String placa;
-	
-	@Column(name="quilometragem")
-	@Positive(message="A quilometragem deve ser positiva")
+
+	@Column(name = "quilometragem")
+	@Positive(message = "A quilometragem deve ser positiva")
 	private int quilometragem;
-	
-	@Size(max=17)
-	@Column(name="chassi")
+
+	@Size(max = 17)
+	@Column(name = "chassi")
 	@NotEmpty(message = "o chassi do veículo é obrigatório")
 	private String chassi;
-	
-	@Column(name="valor")
-	@Positive(message="O valor deve ser positivo")
+
+	@Column(name = "valor")
+	@Positive(message = "O valor deve ser positivo")
 	private double valor;
-	
-	@Column(name="status")
+
+	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
-	@NotNull(message="O status do veículo não pode ser nulo")
+	@NotNull(message = "O status do veículo não pode ser nulo")
 	private StatusDoVeiculo status;
-	
+
 	@Transient
 	public String toString() {
-		return this.modelo.toString() + " "
-			 + this.cor + " "
-			 + this.placa;
+		return this.modelo.toString() + " " + this.cor + " " + this.placa;
 	}
-	
+
 }

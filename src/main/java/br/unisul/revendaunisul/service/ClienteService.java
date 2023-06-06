@@ -19,28 +19,22 @@ public class ClienteService {
 	@Autowired
 	private ClientesRepository repository;
 
-@Validated(AoInserir.class)
-	public Cliente inserir(
-			@NotNull(message="O cliente não pode ser nulo")
-			@Valid Cliente novoCliente) {
+	@Validated(AoInserir.class)
+	public Cliente inserir(@NotNull(message = "O cliente não pode ser nulo") @Valid Cliente novoCliente) {
 		return this.repository.save(novoCliente);
 	}
-	
+
 	@Validated(AoAlterar.class)
-	public Cliente alterar(
-			@NotNull(message="O cliente não pode ser nulo")
-			@Valid Cliente cliente) {
+	public Cliente alterar(@NotNull(message = "O cliente não pode ser nulo") @Valid Cliente cliente) {
 		return this.repository.save(cliente);
 	}
 
-	public Cliente buscarPor(
-			@NotNull(message = "O id do cliente não pode ser nulo") Integer id) {
-		return repository.findById(id).orElseThrow(
-				() -> new IllegalArgumentException("O cliente com id '" + id + "' não existe."));
+	public Cliente buscarPor(@NotNull(message = "O id do cliente não pode ser nulo") Integer id) {
+		return repository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("O cliente com id '" + id + "' não existe."));
 	}
 
-	public void excluirPorId(
-			@NotNull(message = "O id do cliente não pode ser nulo") Integer id) {
+	public void excluirPorId(@NotNull(message = "O id do cliente não pode ser nulo") Integer id) {
 		repository.deleteById(id);
 	}
 }

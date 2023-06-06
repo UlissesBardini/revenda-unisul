@@ -29,42 +29,43 @@ import lombok.EqualsAndHashCode;
 @Entity(name = "Venda")
 public class Venda {
 
-	//id, id_colaborador, id_cliente, id_veiculo, data, forma_pagamento, qtde_parcelas
-	
+	// id, id_colaborador, id_cliente, id_veiculo, data, forma_pagamento,
+	// qtde_parcelas
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Column(name = "id")
-	@Null(message="O id deve ser nulo para inserção", groups = AoInserir.class)
-	@NotNull(message="O id não pode ser nulo para alteração", groups = AoAlterar.class)
+	@Null(message = "O id deve ser nulo para inserção", groups = AoInserir.class)
+	@NotNull(message = "O id não pode ser nulo para alteração", groups = AoAlterar.class)
 	private Integer id;
-	
+
 	@ManyToOne
-	@JoinColumn(name="id_colaborador")
-	@NotNull(message="O colaborador da venda não pode ser nulo")
+	@JoinColumn(name = "id_colaborador")
+	@NotNull(message = "O colaborador da venda não pode ser nulo")
 	private Colaborador colaborador;
-	
+
 	@ManyToOne
-	@JoinColumn(name="id_cliente")
-	@NotNull(message="O cliente da venda não pode ser nulo")
+	@JoinColumn(name = "id_cliente")
+	@NotNull(message = "O cliente da venda não pode ser nulo")
 	private Cliente cliente;
-	
+
 	@OneToOne
-	@JoinColumn(name="id_veiculo")
-	@NotNull(message="O veículo da venda não pode ser nulo")
+	@JoinColumn(name = "id_veiculo")
+	@NotNull(message = "O veículo da venda não pode ser nulo")
 	private Veiculo veiculo;
-	
-	@Column(name="data")
-	@NotNull(message="A data da venda não pode ser nula")
+
+	@Column(name = "data")
+	@NotNull(message = "A data da venda não pode ser nula")
 	private LocalDate data;
-	
+
 	@NotNull(message = "A forma de pagamento não pode ser nula")
-	@Column(name="forma_pagamento")
+	@Column(name = "forma_pagamento")
 	@Enumerated(EnumType.STRING)
 	private FormaDePagamento formaDePagamento;
-	
-	@Column(name="qtde_parcelas")
-	@Positive(message="A quantidade de parcelas deve ser positiva")
+
+	@Column(name = "qtde_parcelas")
+	@Positive(message = "A quantidade de parcelas deve ser positiva")
 	private int quantidadeDeParcelas;
-	
+
 }

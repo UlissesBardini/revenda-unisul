@@ -24,15 +24,15 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 public class Usuario {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Column(name = "id")
-	@Null(message="O id deve ser nulo para inserção", groups = AoInserir.class)
-	@NotNull(message="O id não pode ser nulo para alteração", groups = AoAlterar.class)
+	@Null(message = "O id deve ser nulo para inserção", groups = AoInserir.class)
+	@NotNull(message = "O id não pode ser nulo para alteração", groups = AoAlterar.class)
 	private Integer id;
-	
+
 	@Column(name = "perfil")
 	@Enumerated(value = EnumType.STRING)
 	@NotNull(message = "O perfil do usuário não pode ser nulo")
@@ -42,10 +42,10 @@ public class Usuario {
 	@Size(max = 50, message = "O login do usuário não deve conter mais de 50 caracteres")
 	@NotBlank(message = "O login do usário não deve estar em branco")
 	private String login;
-	
+
 	@Column(name = "senha")
 	@Size(max = 50, message = "A senha do usuário não deve conter mais de 50 caracteres")
 	@NotBlank(message = "A senha do usuário não deve estar em branco")
 	private String senha;
-	
+
 }

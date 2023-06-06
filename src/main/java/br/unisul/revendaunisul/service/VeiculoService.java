@@ -20,27 +20,21 @@ public class VeiculoService {
 	private VeiculosRepository repository;
 
 	@Validated(AoInserir.class)
-	public Veiculo inserir(
-			@NotNull(message="O veículo não pode ser nulo")
-			@Valid Veiculo novoVeiculo) {
+	public Veiculo inserir(@NotNull(message = "O veículo não pode ser nulo") @Valid Veiculo novoVeiculo) {
 		return this.repository.save(novoVeiculo);
 	}
-	
+
 	@Validated(AoAlterar.class)
-	public Veiculo alterar(
-			@NotNull(message="O veículo não pode ser nulo")
-			@Valid Veiculo veiculo) {
+	public Veiculo alterar(@NotNull(message = "O veículo não pode ser nulo") @Valid Veiculo veiculo) {
 		return this.repository.save(veiculo);
 	}
 
-	public Veiculo buscarPor(
-			@NotNull(message = "O id do veículo não pode ser nulo") Integer id) {
-		return repository.findById(id).orElseThrow(
-				() -> new IllegalArgumentException("O veículo com id '" + id + "' não existe."));
+	public Veiculo buscarPor(@NotNull(message = "O id do veículo não pode ser nulo") Integer id) {
+		return repository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("O veículo com id '" + id + "' não existe."));
 	}
 
-	public void excluirPorId(
-			@NotNull(message = "O id do veículo não pode ser nulo") Integer id) {
+	public void excluirPorId(@NotNull(message = "O id do veículo não pode ser nulo") Integer id) {
 		repository.deleteById(id);
 	}
 }

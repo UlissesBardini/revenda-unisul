@@ -26,50 +26,48 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@Table(name="modelos")
-@Entity(name="Modelo")
+@Table(name = "modelos")
+@Entity(name = "Modelo")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Modelo {
 
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Null(message="O id deve ser nulo para inserção", groups = AoInserir.class)
-	@NotNull(message="O id não pode ser nulo para alteração", groups = AoAlterar.class)
+	@Null(message = "O id deve ser nulo para inserção", groups = AoInserir.class)
+	@NotNull(message = "O id não pode ser nulo para alteração", groups = AoAlterar.class)
 	private Integer id;
-	
+
 	@ManyToOne
-	@JoinColumn(name="id_marca")
-	@NotNull(message="A marca do modelo não pode ser nula")
+	@JoinColumn(name = "id_marca")
+	@NotNull(message = "A marca do modelo não pode ser nula")
 	private Marca marca;
-	
-	@Column(name="nome")
+
+	@Column(name = "nome")
 	@Size(max = 50, message = "O nome do modelo deve ter até 50 caracteres")
 	@NotEmpty(message = "O nome do modelo é obrigatório")
 	private String nome;
-	
-	@Column(name="tipo")
+
+	@Column(name = "tipo")
 	@Enumerated(EnumType.STRING)
-	@NotNull(message="O tipo do modelo não pode ser nulo")
+	@NotNull(message = "O tipo do modelo não pode ser nulo")
 	private TipoDeVeiculo tipo;
-	
-	@Column(name="transmissao")
+
+	@Column(name = "transmissao")
 	@Enumerated(EnumType.STRING)
-	@NotNull(message="A transmissão do modelo não pode ser nula")
+	@NotNull(message = "A transmissão do modelo não pode ser nula")
 	private Transmissao transmissao;
-	
-	@Column(name="combustivel")
+
+	@Column(name = "combustivel")
 	@Enumerated(EnumType.STRING)
-	@NotNull(message="O combustível do modelo não pode ser nulo")
+	@NotNull(message = "O combustível do modelo não pode ser nulo")
 	private Combustivel combustivel;
-	
+
 	@Transient
 	public String toString() {
-		return this.marca.getNome() + " "
-			 + this.nome + " "
-			 + this.transmissao.toString()+ " " 
-			 + this.combustivel.toString();
+		return this.marca.getNome() + " " + this.nome + " " + this.transmissao.toString() + " "
+				+ this.combustivel.toString();
 	}
-	
+
 }

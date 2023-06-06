@@ -20,27 +20,21 @@ public class VendaService {
 	private VendasRepository repository;
 
 	@Validated(AoInserir.class)
-	public Venda inserir(
-			@NotNull(message="A venda não pode ser nula")
-			@Valid Venda novaVenda) {
+	public Venda inserir(@NotNull(message = "A venda não pode ser nula") @Valid Venda novaVenda) {
 		return this.repository.save(novaVenda);
 	}
-	
+
 	@Validated(AoAlterar.class)
-	public Venda alterar(
-			@NotNull(message="A venda não pode ser nula")
-			@Valid Venda venda) {
+	public Venda alterar(@NotNull(message = "A venda não pode ser nula") @Valid Venda venda) {
 		return this.repository.save(venda);
 	}
 
-	public Venda buscarPor(
-			@NotNull(message = "O id da venda não pode ser nulo") Integer id) {
-		return repository.findById(id).orElseThrow(
-				() -> new IllegalArgumentException("A venda com id '" + id + "' não existe."));
+	public Venda buscarPor(@NotNull(message = "O id da venda não pode ser nulo") Integer id) {
+		return repository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("A venda com id '" + id + "' não existe."));
 	}
 
-	public void excluirPorId(
-			@NotNull(message = "O id da venda não pode ser nulo") Integer id) {
+	public void excluirPorId(@NotNull(message = "O id da venda não pode ser nulo") Integer id) {
 		repository.deleteById(id);
 	}
 }
