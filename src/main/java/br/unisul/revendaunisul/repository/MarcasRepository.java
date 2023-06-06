@@ -8,4 +8,6 @@ import br.unisul.revendaunisul.entity.Marca;
 @Repository
 public interface MarcasRepository extends JpaRepository<Marca, Integer> {
 
+	public Marca getByNome(String nome);
+	
 }

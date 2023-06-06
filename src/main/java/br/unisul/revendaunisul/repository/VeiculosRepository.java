@@ -8,4 +8,8 @@ import br.unisul.revendaunisul.entity.Veiculo;
 @Repository
 public interface VeiculosRepository extends JpaRepository<Veiculo, Integer> {
 
+	public Veiculo getByPlaca(String placa);
+	
+	public Veiculo getByChassi(String chassi);
+	
 }
