@@ -47,7 +47,6 @@ public class Colaborador {
 
 	@Size(min = 14, max = 14, message = "O cpf deve conter exatamente 14 caracteres")
 	@NotBlank(message = "O cpf não deve ser um espaço em branco")
-	//@MatchesPattern("/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/")
 	@Column(name = "cpf")
 	private String cpf;
 
@@ -56,6 +55,7 @@ public class Colaborador {
 	@Column(name = "dt_nascimento")
 	private LocalDate dataDeNascimento;
 
+	//rever anotacao
 	//@Past(message = "A data de cadastro não deve ser posterior a data atual")
 	@NotNull(message = "A data de cadastro não deve ser nula")
 	@Column(name = "dt_cadastro")
@@ -64,6 +64,5 @@ public class Colaborador {
 	@Size(min = 14, max = 14, message = "O telefone deve conter exatamente 14 caracteres")
 	@NotBlank(message = "O telefone não deve ser nulo")
 	@Column(name = "telefone")
-	//@MatchesPattern("/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/")
 	private String telefone;
 }
