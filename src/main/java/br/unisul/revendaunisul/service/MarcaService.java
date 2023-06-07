@@ -1,5 +1,7 @@
 package br.unisul.revendaunisul.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -49,15 +51,23 @@ public class MarcaService {
 				.orElseThrow(() -> new IllegalArgumentException("A marca com id '" + id + "' não existe."));
 	}
 
-	public void excluirPorId(@NotNull(message = "O id da marca não pode ser nulo") Integer id) {
+	public void excluirPor(@NotNull(message = "O id da marca não pode ser nulo") Integer id) {
 		repository.deleteById(id);
 	}
 	
 	private void validar(Marca marca) {
 		Marca marcaEncontrada = this.repository.getByNome(marca.getNome());
 		if (marcaEncontrada != null) {
-			Preconditions.checkArgument(marcaEncontrada.getId().equals(marca.getId())
-					, "A marca '" + marca.getNome() + "' já existe");
+			Preconditions.checkArgument(marcaEncontrada.getId().equals(marca.getId()),
+					"A marca '" + marca.getNome() + "' já existe");
 		}
+	}
+
+	public List<Marca> listarPor(String filtro) {
+		return repository.listarPor("%" + filtro +"%");
+	}
+
+	public List<Marca> listarTodos() {
+		return repository.findAll();
 	}
 }

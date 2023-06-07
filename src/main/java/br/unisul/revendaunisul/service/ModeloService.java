@@ -1,5 +1,7 @@
 package br.unisul.revendaunisul.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -10,7 +12,9 @@ import org.springframework.validation.annotation.Validated;
 
 import com.google.common.base.Preconditions;
 
+import br.unisul.revendaunisul.entity.Marca;
 import br.unisul.revendaunisul.entity.Modelo;
+import br.unisul.revendaunisul.enums.TipoDeVeiculo;
 import br.unisul.revendaunisul.repository.ModelosRepository;
 import br.unisul.revendaunisul.validation.AoAlterar;
 import br.unisul.revendaunisul.validation.AoInserir;
@@ -46,11 +50,24 @@ public class ModeloService {
 				.orElseThrow(() -> new IllegalArgumentException("O modelo com id '" + id + "' não existe."));
 	}
 
-	public void excluirPorId(@NotNull(message = "O id do modelo não pode ser nulo") Integer id) {
+	public void excluirPor(@NotNull(message = "O id do modelo não pode ser nulo") Integer id) {
 		repository.deleteById(id);
+	}
+	
+	public List<Modelo> listarPor(String filtro, Marca marca, TipoDeVeiculo tipo) {
+		return repository.listarPor("%" + filtro +"%", marca, tipo);
+	}
+	
+	public List<Modelo> listarPor(Marca marca) {
+		return repository.listarPor(marca);
+	}
+
+	public List<Modelo> listarTodos() {
+		return repository.findAll();
 	}
 	
 	private void validar(Modelo modelo) {
 		Preconditions.checkArgument(modelo.getMarca().getId() != null, "O id da marca não pode ser nulo");
 	}
+	
 }

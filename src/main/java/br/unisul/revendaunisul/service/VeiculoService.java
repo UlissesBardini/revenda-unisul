@@ -1,6 +1,7 @@
 package br.unisul.revendaunisul.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
@@ -56,6 +57,11 @@ public class VeiculoService {
 		repository.deleteById(id);
 	}
 	
+	public List<Veiculo> listarPor(
+			@NotNull(message = "O modelo não pode ser nulo") Modelo modelo) {
+		return repository.listarPor(modelo);
+	}
+	
 	private void validar(Veiculo veiculo) {
 		this.validarModelo(veiculo.getModelo());
 		this.validarAno(veiculo.getAno());
@@ -75,7 +81,7 @@ public class VeiculoService {
 	private void validarPlaca(Veiculo veiculo) {
 		String placaPattern = "/[A-Z]{3}-[0-9][0-9A-Z][0-9]{2}/";
 		Preconditions.checkArgument(veiculo.getPlaca().matches(placaPattern),
-				"A placa deve possuir o formato 'ABC-1234' ou 'ABC-1D34'");
+				"A placa deve possuir o formato 'ABC-1234' ou 'ABC-1D23'");
 		
 		Veiculo veiculoEncontrado = repository.getByPlaca(veiculo.getPlaca());
 		if (veiculoEncontrado != null) {
