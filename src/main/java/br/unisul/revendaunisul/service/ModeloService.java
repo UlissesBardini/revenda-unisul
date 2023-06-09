@@ -42,12 +42,11 @@ public class ModeloService {
 		this.validar(modeloSalvo);
 		this.em.detach(repository.saveAndFlush(modeloSalvo));
 		this.em.clear();
-		return this.buscarPor(modeloSalvo.getId());
+		return repository.buscarPor(modeloSalvo.getId());
 	}
 
 	public Modelo buscarPor(@NotNull(message = "O id do modelo não pode ser nulo") Integer id) {
-		return repository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("O modelo com id '" + id + "' não existe."));
+		return repository.buscarPor(id);
 	}
 
 	public void excluirPor(@NotNull(message = "O id do modelo não pode ser nulo") Integer id) {
@@ -66,8 +65,13 @@ public class ModeloService {
 		return repository.findAll();
 	}
 	
+	public boolean isExistePor(Marca marca) {
+		return repository.existsByMarca(marca);
+	}
+
 	private void validar(Modelo modelo) {
 		Preconditions.checkArgument(modelo.getMarca().getId() != null, "O id da marca não pode ser nulo");
 	}
+
 	
 }

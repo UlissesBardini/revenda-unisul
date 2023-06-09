@@ -29,7 +29,7 @@ public class TelaCadastroMarca extends JFrame {
 
 	public TelaCadastroMarca() {
 		setTitle("Cadastrar Marca");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 110);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -94,12 +94,18 @@ public class TelaCadastroMarca extends JFrame {
 	}
 	
 	public void colocarEmInsercao() {
+		this.marca = null;
 		this.limparCampos();
 		super.setVisible(true);
 	}
 	
+	private void preencherCampos(Marca marca) {
+		this.edtNome.setText(marca.getNome());
+	}
+	
 	public void colocarEmEdicao(Marca marca) {
 		this.marca = marca;
+		this.preencherCampos(marca);
 		super.setVisible(true);
 	}
 	

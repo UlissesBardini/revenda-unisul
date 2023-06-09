@@ -1,5 +1,6 @@
 package br.unisul.revendaunisul.view;
 
+import java.awt.event.ItemEvent;
 import java.util.List;
 
 import javax.swing.GroupLayout;
@@ -50,7 +51,7 @@ public class TelaListagemVeiculo extends JFrame {
 	
 	public TelaListagemVeiculo() {
 		setTitle("Gerenciar Veículos");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 325);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -66,8 +67,8 @@ public class TelaListagemVeiculo extends JFrame {
 			table.setModel(model);
 			TableColumnModel cm = table.getColumnModel();
 			cm.getColumn(0).setPreferredWidth(25);
-			cm.getColumn(2).setPreferredWidth(117);
-			cm.getColumn(3).setPreferredWidth(90);
+			cm.getColumn(2).setPreferredWidth(42);
+			cm.getColumn(3).setPreferredWidth(60);
 			table.updateUI();
 		});
 
@@ -78,10 +79,10 @@ public class TelaListagemVeiculo extends JFrame {
 			int linhaSelecionada = table.getSelectedRow();
 			VeiculoTableModel model = (VeiculoTableModel) table.getModel();
 			Veiculo veiculoSalvo = model.getBy(linhaSelecionada);
-			modeloService.excluirPor(veiculoSalvo.getId());
+			service.excluirPor(veiculoSalvo.getId());
 			model.removeBy(linhaSelecionada);
 			table.updateUI();
-			JOptionPane.showMessageDialog(contentPane, "Modelo removido com sucesso!");
+			JOptionPane.showMessageDialog(contentPane, "Veículo removido com sucesso!");
 
 		});
 
@@ -98,19 +99,25 @@ public class TelaListagemVeiculo extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
 
+		JLabel lblMarca = new JLabel("Modelo:");
+		
+		cbModelo = new JComboBox<Modelo>();
+
 		JLabel LblMarca = new JLabel("Marca:");
 
 		cbMarca = new JComboBox<Marca>();
-		for (Marca m : marcaService.listarTodos()) {
+		List<Marca> marcas = marcaService.listarTodos();
+		for (Marca m : marcas) {
 			cbMarca.addItem(m);
 		}
-
-		JLabel lblTipo = new JLabel("Modelo:");
-
-		cbModelo = new JComboBox<Modelo>();
-		for (Modelo m : modeloService.listarPor((Marca) cbMarca.getSelectedItem())) {
-			cbModelo.addItem(m);
-		}
+		cbMarca.addItemListener(e -> {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				List<Modelo> modelos = modeloService.listarPor((Marca) cbMarca.getSelectedItem());
+				for (Modelo m : modelos) {
+					cbModelo.addItem(m);
+				}
+			}
+		});
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -129,7 +136,7 @@ public class TelaListagemVeiculo extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(cbMarca, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblTipo)
+							.addComponent(lblMarca)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(cbModelo, 0, 153, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -146,7 +153,7 @@ public class TelaListagemVeiculo extends JFrame {
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 								.addComponent(LblMarca)
 								.addComponent(cbMarca, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblTipo))
+								.addComponent(lblMarca))
 							.addPreferredGap(ComponentPlacement.RELATED, 3, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 							.addComponent(btnBuscar)

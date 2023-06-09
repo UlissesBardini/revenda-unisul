@@ -22,8 +22,6 @@ import org.springframework.stereotype.Component;
 import br.unisul.revendaunisul.entity.Marca;
 import br.unisul.revendaunisul.service.MarcaService;
 import br.unisul.revendaunisul.view.tables.MarcaTableModel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 @Component
 public class TelaListagemMarca extends JFrame {
@@ -41,7 +39,7 @@ public class TelaListagemMarca extends JFrame {
 	
 	public TelaListagemMarca() {
 		setTitle("Gerenciar Marcas");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

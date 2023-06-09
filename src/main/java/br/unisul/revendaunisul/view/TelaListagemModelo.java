@@ -48,7 +48,7 @@ public class TelaListagemModelo extends JFrame {
 	
 	public TelaListagemModelo() {
 		setTitle("Gerenciar Modelos");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 325);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -106,7 +106,8 @@ public class TelaListagemModelo extends JFrame {
 		JLabel LblMarca = new JLabel("Marca:");
 
 		cbMarca = new JComboBox<Marca>();
-		for (Marca m : marcaService.listarTodos()) {
+		List<Marca> marcas = marcaService.listarTodos();
+		for (Marca m : marcas) {
 			cbMarca.addItem(m);
 		}
 

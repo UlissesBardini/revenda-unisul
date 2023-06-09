@@ -1,5 +1,7 @@
 package br.unisul.revendaunisul.view;
 
+import java.util.List;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -42,7 +44,7 @@ public class TelaCadastroModelo extends JFrame {
 
 	public TelaCadastroModelo() {
 		setTitle("Cadastrar Modelo");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 193);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -79,7 +81,8 @@ public class TelaCadastroModelo extends JFrame {
 		JLabel lblMarca = new JLabel("Marca:");
 
 		cbMarca = new JComboBox<Marca>();
-		for (Marca m : marcaService.listarTodos()) {
+		List<Marca> marcas = marcaService.listarTodos();
+		for (Marca m : marcas) {
 			cbMarca.addItem(m);
 		}
 		
@@ -173,15 +176,29 @@ public class TelaCadastroModelo extends JFrame {
 	
 	private void limparCampos() {
 		this.edtNome.setText("");
+		cbMarca.setSelectedItem(null);
+		cbCombustivel.setSelectedItem(null);
+		cbTipo.setSelectedItem(null);
+		cbTransmissao.setSelectedItem(null);
+	}
+	
+	private void preencherCampos(Modelo modelo) {
+		edtNome.setText(modelo.getNome());
+		cbMarca.setSelectedItem(modelo.getMarca());
+		cbCombustivel.setSelectedItem(modelo.getCombustivel());
+		cbTipo.setSelectedItem(modelo.getTipo());
+		cbTransmissao.setSelectedItem(modelo.getTransmissao());
 	}
 	
 	public void colocarEmInsercao() {
+		this.modelo = null;
 		this.limparCampos();
 		super.setVisible(true);
 	}
 	
 	public void colocarEmEdicao(Modelo modelo) {
 		this.modelo = modelo;
+		this.preencherCampos(modelo);
 		super.setVisible(true);
 	}
 }

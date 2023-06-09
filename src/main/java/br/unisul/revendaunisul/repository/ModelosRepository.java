@@ -17,6 +17,12 @@ public interface ModelosRepository extends JpaRepository<Modelo, Integer> {
 	@Query("SELECT m "
 			+ "FROM Modelo m "
 			+ "JOIN FETCH m.marca "
+			+ "WHERE m.id = :id")
+	public Modelo buscarPor(@Param("id") Integer id);
+	
+	@Query("SELECT m "
+			+ "FROM Modelo m "
+			+ "JOIN FETCH m.marca "
 			+ "WHERE Upper(m.nome) LIKE Upper(filtro) "
 			+ "AND (:marca IS NULL OR :marca = m.marca) "
 			+ "AND (:tipo IS NULL OR :tipo = m.tipo) ")
@@ -27,8 +33,9 @@ public interface ModelosRepository extends JpaRepository<Modelo, Integer> {
 	
 	@Query("SELECT m "
 			+ "FROM Modelo m "
-			+ "JOIN FETCH m.marca "
 			+ "WHERE m.marca = :marca")
 	public List<Modelo> listarPor(@Param("marca") Marca marca);
+	
+	public boolean existsByMarca(Marca marca);
 	
 }
