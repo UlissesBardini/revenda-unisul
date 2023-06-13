@@ -94,9 +94,9 @@ public class VeiculoService {
 	private void validarChassi(Veiculo veiculo) {
 		String chassi = veiculo.getChassi();
 		
-		String chassiPattern = "/[0-9a-zA-Z]{3} [0-9a-zA-Z]{6} [0-9a-zA-Z]{2} [0-9a-zA-Z]{2}\\d{4}/";
+		String chassiPattern = "/[0-9a-zA-Z]{13}\\d{4}/";
 		Preconditions.checkArgument(chassi.matches(chassiPattern),
-				"O chassi deve possuir o formato 'XXX XXXXXX XX XXNNNN'");
+				"O chassi deve possuir o formato 'XXXXXXXXXXXXXNNNN'");
 		
 		String[] caracteresProibidos = { "i", "I", "o", "O", "q", "Q" };
 		for (String caractere : caracteresProibidos) {
