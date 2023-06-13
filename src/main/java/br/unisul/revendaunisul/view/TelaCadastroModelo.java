@@ -1,5 +1,7 @@
 package br.unisul.revendaunisul.view;
 
+import java.util.List;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -13,6 +15,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.unisul.revendaunisul.entity.Marca;
 import br.unisul.revendaunisul.entity.Modelo;
@@ -22,12 +25,14 @@ import br.unisul.revendaunisul.enums.Transmissao;
 import br.unisul.revendaunisul.service.MarcaService;
 import br.unisul.revendaunisul.service.ModeloService;
 
+@Component
 public class TelaCadastroModelo extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField edtNome;
 	private Modelo modelo;
+	private List<Marca> marcas;
 	private JComboBox<Marca> cbMarca;
 	private JComboBox<Combustivel> cbCombustivel;
 	private JComboBox<TipoDeVeiculo> cbTipo;
@@ -39,10 +44,9 @@ public class TelaCadastroModelo extends JFrame {
 	@Autowired
 	private MarcaService marcaService;
 	
-
 	public TelaCadastroModelo() {
 		setTitle("Cadastrar Modelo");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 193);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -79,13 +83,12 @@ public class TelaCadastroModelo extends JFrame {
 		JLabel lblMarca = new JLabel("Marca:");
 
 		cbMarca = new JComboBox<Marca>();
-		for (Marca m : marcaService.listarTodos()) {
-			cbMarca.addItem(m);
-		}
+		cbMarca.setToolTipText("Selecione...");
 		
 		JLabel lblCombustivel = new JLabel("Combustível:");
 		
 		cbCombustivel = new JComboBox<Combustivel>();
+		cbCombustivel.setToolTipText("Selecione...");
 		for (Combustivel c : Combustivel.values()) {
 			cbCombustivel.addItem(c);
 		}
@@ -93,6 +96,7 @@ public class TelaCadastroModelo extends JFrame {
 		JLabel lblTipo = new JLabel("Tipo:");
 		
 		cbTipo = new JComboBox<TipoDeVeiculo>();
+		cbTipo.setToolTipText("Selecione...");
 		for (TipoDeVeiculo t : TipoDeVeiculo.values()) {
 			cbTipo.addItem(t);
 		}
@@ -100,6 +104,7 @@ public class TelaCadastroModelo extends JFrame {
 		JLabel lblTransmissao = new JLabel("Transmissão:");
 
 		cbTransmissao = new JComboBox<Transmissao>();
+		cbTransmissao.setToolTipText("Selecione...");
 		for (Transmissao t : Transmissao.values()) {
 			cbTransmissao.addItem(t);
 		}
@@ -166,22 +171,46 @@ public class TelaCadastroModelo extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 	
+	public void carregarOpcoes() {
+		this.marcas = marcaService.listarTodos();
+		this.cbMarca.removeAllItems();
+		for (Marca m : marcas) {
+			cbMarca.addItem(m);
+		}
+	}
+	
 	@Override
 	public void setVisible(boolean b) {
 		System.out.println("Não use o método 'setVisible()'");
 	}
 	
 	private void limparCampos() {
-		this.edtNome.setText("");
+		this.carregarOpcoes();
+		edtNome.setText("");
+		cbMarca.setSelectedItem(0);
+		cbCombustivel.setSelectedItem(0);
+		cbTipo.setSelectedItem(0);
+		cbTransmissao.setSelectedItem(0);
+	}
+	
+	private void preencherCampos(Modelo modelo) {
+		this.carregarOpcoes();
+		edtNome.setText(modelo.getNome());
+		cbMarca.setSelectedItem(modelo.getMarca());
+		cbCombustivel.setSelectedItem(modelo.getCombustivel());
+		cbTipo.setSelectedItem(modelo.getTipo());
+		cbTransmissao.setSelectedItem(modelo.getTransmissao());
 	}
 	
 	public void colocarEmInsercao() {
+		this.modelo = null;
 		this.limparCampos();
 		super.setVisible(true);
 	}
 	
 	public void colocarEmEdicao(Modelo modelo) {
 		this.modelo = modelo;
+		this.preencherCampos(modelo);
 		super.setVisible(true);
 	}
 }
