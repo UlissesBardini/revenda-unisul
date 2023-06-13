@@ -18,9 +18,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import br.unisul.revendaunisul.enums.Combustivel;
 import br.unisul.revendaunisul.enums.TipoDeVeiculo;
 import br.unisul.revendaunisul.enums.Transmissao;

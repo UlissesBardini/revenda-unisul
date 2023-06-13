@@ -1,7 +1,6 @@
 package br.unisul.revendaunisul.view;
 
 import java.awt.event.ItemEvent;
-import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.swing.GroupLayout;
@@ -20,6 +19,7 @@ import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.unisul.revendaunisul.entity.Marca;
 import br.unisul.revendaunisul.entity.Modelo;
@@ -29,6 +29,7 @@ import br.unisul.revendaunisul.service.MarcaService;
 import br.unisul.revendaunisul.service.ModeloService;
 import br.unisul.revendaunisul.service.VeiculoService;
 
+@Component
 public class TelaCadastroVeiculo extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -37,6 +38,8 @@ public class TelaCadastroVeiculo extends JFrame {
 	private JTextField edtAno;
 	private JComboBox<Marca> cbMarca;
 	private JComboBox<Modelo> cbModelo;
+	private List<Marca> marcas;
+	private List<Modelo> modelos;
 	private JTextField edtChassi;
 	private JTextField edtQuilometragem;
 	private JTextField edtPlaca;
@@ -70,14 +73,11 @@ public class TelaCadastroVeiculo extends JFrame {
 			JLabel lblMarca = new JLabel("Marca:");
 
 			cbMarca = new JComboBox<Marca>();
-			List<Marca> marcas = marcaService.listarTodos();
-			for (Marca m : marcas) {
-				cbMarca.addItem(m);
-			}
 			cbMarca.addItemListener(e -> {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-					List<Modelo> modelos = modeloService
+					modelos = modeloService
 							.listarPor((Marca) cbMarca.getSelectedItem());
+					cbModelo.removeAllItems();
 					for (Modelo m : modelos) {
 						cbModelo.addItem(m);
 					}
@@ -93,7 +93,7 @@ public class TelaCadastroVeiculo extends JFrame {
 			edtAno = new JFormattedTextField(nf);
 			edtAno.setColumns(4);
 			
-			MaskFormatter chassiMask = new MaskFormatter("AAA AAAAAA AA AA####");
+			MaskFormatter chassiMask = new MaskFormatter("AAAAAAAAAAAAA####");
 			chassiMask.setPlaceholder("_");
 			
 			edtChassi = new JFormattedTextField(chassiMask);
@@ -267,9 +267,10 @@ public class TelaCadastroVeiculo extends JFrame {
 	}
 
 	private void limparCampos() {
+		this.carregarOpcoes();
 		edtAno.setText("");
-		cbMarca.setSelectedItem(null);
-		cbModelo.setSelectedItem(null);
+		cbMarca.setSelectedItem(0);
+		cbModelo.setSelectedItem(0);
 		edtChassi.setText("");
 		edtQuilometragem.setText("");
 		edtPlaca.setText("");
@@ -278,6 +279,7 @@ public class TelaCadastroVeiculo extends JFrame {
 	}
 
 	private void preencherCampos(Veiculo veiculo) {
+		this.carregarOpcoes();
 		edtAno.setText(String.valueOf(veiculo.getAno()));
 		cbMarca.setSelectedItem(veiculo.getModelo().getMarca());
 		cbModelo.setSelectedItem(veiculo.getModelo());
@@ -298,6 +300,14 @@ public class TelaCadastroVeiculo extends JFrame {
 		this.veiculo = veiculo;
 		this.preencherCampos(veiculo);
 		super.setVisible(true);
+	}
+	
+	private void carregarOpcoes() {
+		marcas = marcaService.listarTodos();
+		cbMarca.removeAllItems();
+		for (Marca m : marcas) {
+			cbMarca.addItem(m);
+		}
 	}
 
 }

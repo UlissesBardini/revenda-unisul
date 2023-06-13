@@ -36,6 +36,7 @@ public class TelaListagemModelo extends JFrame {
 	private JTable table;
 	private JComboBox<Marca> cbMarca;
 	private JComboBox<TipoDeVeiculo> cbTipo;
+	private List<Marca> marcas;
 
 	@Autowired
 	private ModeloService service;
@@ -77,6 +78,9 @@ public class TelaListagemModelo extends JFrame {
 		});
 
 		JButton btnNovo = new JButton("Novo");
+		btnNovo.addActionListener(e -> {
+			cadastro.colocarEmInsercao();
+		});
 
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(e -> {
@@ -106,10 +110,7 @@ public class TelaListagemModelo extends JFrame {
 		JLabel LblMarca = new JLabel("Marca:");
 
 		cbMarca = new JComboBox<Marca>();
-		List<Marca> marcas = marcaService.listarTodos();
-		for (Marca m : marcas) {
-			cbMarca.addItem(m);
-		}
+		cbMarca.setToolTipText("Selecione...");
 
 		JLabel lblTipo = new JLabel("Tipo:");
 
@@ -182,4 +183,20 @@ public class TelaListagemModelo extends JFrame {
 						.addContainerGap()));
 		contentPane.setLayout(gl_contentPane);
 	}
+	
+	private void carregarOpcoes() {
+		marcas = marcaService.listarTodos();
+		cbMarca.removeAllItems();
+		for (Marca m : marcas) {
+			cbMarca.addItem(m);
+		}
+	}
+	
+	@Override
+	public void setVisible(boolean b) {
+		this.carregarOpcoes();
+		this.cbMarca.setSelectedItem(0);
+		super.setVisible(b);
+	}
+	
 }

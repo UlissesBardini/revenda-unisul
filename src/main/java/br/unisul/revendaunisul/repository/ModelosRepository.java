@@ -23,7 +23,7 @@ public interface ModelosRepository extends JpaRepository<Modelo, Integer> {
 	@Query("SELECT m "
 			+ "FROM Modelo m "
 			+ "JOIN FETCH m.marca "
-			+ "WHERE Upper(m.nome) LIKE Upper(filtro) "
+			+ "WHERE Upper(m.nome) LIKE Upper(:filtro) "
 			+ "AND (:marca IS NULL OR :marca = m.marca) "
 			+ "AND (:tipo IS NULL OR :tipo = m.tipo) ")
 	public List<Modelo> listarPor(

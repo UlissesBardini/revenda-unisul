@@ -34,6 +34,8 @@ public class TelaListagemVeiculo extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
+	private List<Marca> marcas;
+	private List<Modelo> modelos;
 	private JComboBox<Marca> cbMarca;
 	private JComboBox<Modelo> cbModelo;
 
@@ -73,6 +75,9 @@ public class TelaListagemVeiculo extends JFrame {
 		});
 
 		JButton btnNovo = new JButton("Novo");
+		btnNovo.addActionListener(e -> {
+			cadastro.colocarEmInsercao();
+		});
 
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(e -> {
@@ -102,17 +107,17 @@ public class TelaListagemVeiculo extends JFrame {
 		JLabel lblMarca = new JLabel("Modelo:");
 		
 		cbModelo = new JComboBox<Modelo>();
+		cbModelo.setToolTipText("Selecione...");
 
 		JLabel LblMarca = new JLabel("Marca:");
 
 		cbMarca = new JComboBox<Marca>();
-		List<Marca> marcas = marcaService.listarTodos();
-		for (Marca m : marcas) {
-			cbMarca.addItem(m);
-		}
+		cbMarca.setToolTipText("Selecione...");
+		
 		cbMarca.addItemListener(e -> {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
-				List<Modelo> modelos = modeloService.listarPor((Marca) cbMarca.getSelectedItem());
+				cbModelo.removeAllItems();
+				modelos = modeloService.listarPor((Marca) cbMarca.getSelectedItem());
 				for (Modelo m : modelos) {
 					cbModelo.addItem(m);
 				}
@@ -169,4 +174,19 @@ public class TelaListagemVeiculo extends JFrame {
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
+	
+	@Override
+	public void setVisible(boolean b) {
+		this.carregarOpcoes();
+		super.setVisible(b);
+	}
+	
+	private void carregarOpcoes() {
+		marcas = marcaService.listarTodos();
+		cbMarca.removeAllItems();
+		for (Marca m : marcas) {
+			cbMarca.addItem(m);
+		}
+	}
+	
 }

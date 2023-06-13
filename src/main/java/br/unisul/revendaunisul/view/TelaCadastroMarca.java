@@ -12,10 +12,12 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.unisul.revendaunisul.entity.Marca;
 import br.unisul.revendaunisul.service.MarcaService;
 
+@Component
 public class TelaCadastroMarca extends JFrame {
 
 	private static final long serialVersionUID = 1L;
