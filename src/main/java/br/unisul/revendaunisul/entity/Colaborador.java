@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -55,8 +56,7 @@ public class Colaborador {
 	@Column(name = "dt_nascimento")
 	private LocalDate dataDeNascimento;
 
-	//rever anotacao
-	//@Past(message = "A data de cadastro não deve ser posterior a data atual")
+	@FutureOrPresent(message = "A data de cadastro não deve ser posterior a data atual")
 	@NotNull(message = "A data de cadastro não deve ser nula")
 	@Column(name = "dt_cadastro")
 	private LocalDate dataDeCadastro;

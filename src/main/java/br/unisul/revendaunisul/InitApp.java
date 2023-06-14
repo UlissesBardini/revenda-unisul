@@ -9,8 +9,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import br.unisul.revendaunisul.service.ColaboradorService;
-import br.unisul.revendaunisul.service.UsuarioService;
 import br.unisul.revendaunisul.view.TelaLogin;
 
 @SpringBootApplication
