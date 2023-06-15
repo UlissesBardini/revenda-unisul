@@ -37,7 +37,6 @@ public class Cliente {
 	@Column(name = "nm_completo")
 	private String nomeCompleto;
 
-	//@MatchesPattern("/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/")
 	@Size(max = 14, message = "O cpf n�o deve conter mais de 50 caracteres")
 	@NotBlank(message = "O cpf n�o deve ser um espa�o em branco")
 	@Column(name = "cpf")
@@ -47,7 +46,6 @@ public class Cliente {
 	@Column(name = "dt_nascimento")
 	private LocalDate dataDeNascimento;
 
-	//@MatchesPattern("/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/")
 	@Size(max = 15, message = "O telefone n�o deve conter mais de 15 caracteres")
 	@NotBlank(message = "O telefone n�o deve ser um espa�o em branco")
 	@Column(name = "telefone")
