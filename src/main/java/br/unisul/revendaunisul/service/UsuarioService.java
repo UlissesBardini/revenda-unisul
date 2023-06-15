@@ -46,7 +46,6 @@ public class UsuarioService {
 		repository.deleteById(id);
 	}
 
-	// sem regras pois valido no input da tela
 	public Usuario buscarLogin(String login, String senha) {
 		Usuario usuarioEncontrado = repository.buscarLogin(login, senha);
 		Preconditions.checkArgument(usuarioEncontrado != null, "O login ou senha estão incorretos.");

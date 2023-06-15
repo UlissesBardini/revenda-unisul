@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,7 @@ import br.unisul.revendaunisul.enums.StatusDoVeiculo;
 import br.unisul.revendaunisul.service.MarcaService;
 import br.unisul.revendaunisul.service.ModeloService;
 import br.unisul.revendaunisul.service.VeiculoService;
+import br.unisul.revendaunisul.utils.Mascara;
 
 @Component
 public class TelaCadastroVeiculo extends JFrame {
@@ -56,14 +56,13 @@ public class TelaCadastroVeiculo extends JFrame {
 	private ModeloService modeloService;
 
 	public TelaCadastroVeiculo() {
-		try {
-
 			setTitle("Cadastrar Veículo");
 			setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			setBounds(100, 100, 450, 185);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+			setLocationRelativeTo(null);
+			
 			setContentPane(contentPane);
 
 			JLabel lblModelo = new JLabel("Modelo:");
@@ -93,10 +92,7 @@ public class TelaCadastroVeiculo extends JFrame {
 			edtAno = new JFormattedTextField(nf);
 			edtAno.setColumns(4);
 			
-			MaskFormatter chassiMask = new MaskFormatter("AAAAAAAAAAAAA####");
-			chassiMask.setPlaceholder("_");
-			
-			edtChassi = new JFormattedTextField(chassiMask);
+			edtChassi = new JFormattedTextField(Mascara.criar("AAAAAAAAAAAAA####"));
 			edtChassi.setColumns(17);
 
 			JLabel lblChassi = new JLabel("Chassi:");
@@ -107,11 +103,8 @@ public class TelaCadastroVeiculo extends JFrame {
 			edtQuilometragem.setColumns(4);
 
 			JLabel lblPlaca = new JLabel("Placa:");
-
-			MaskFormatter placaMask = new MaskFormatter("UUU-#A##");
-			placaMask.setPlaceholder("_");
 			
-			edtPlaca = new JFormattedTextField(placaMask);
+			edtPlaca = new JFormattedTextField(Mascara.criar("UUU-#A##"));
 			edtPlaca.setColumns(8);
 			
 			JLabel lblCor = new JLabel("Cor:");
@@ -256,14 +249,6 @@ public class TelaCadastroVeiculo extends JFrame {
 							.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnSalvar)
 							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 			contentPane.setLayout(gl_contentPane);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void setVisible(boolean b) {
-		System.out.println("Não use o método 'setVisible()'");
 	}
 
 	private void limparCampos() {
@@ -291,15 +276,15 @@ public class TelaCadastroVeiculo extends JFrame {
 	}
 
 	public void colocarEmInsercao() {
-		this.veiculo = null;
+		this.veiculo = new Veiculo();
 		this.limparCampos();
-		super.setVisible(true);
+		setVisible(true);
 	}
 
 	public void colocarEmEdicao(Veiculo veiculo) {
 		this.veiculo = veiculo;
 		this.preencherCampos(veiculo);
-		super.setVisible(true);
+		setVisible(true);
 	}
 	
 	private void carregarOpcoes() {

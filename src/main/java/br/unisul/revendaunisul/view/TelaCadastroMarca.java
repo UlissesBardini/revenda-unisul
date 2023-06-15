@@ -35,7 +35,8 @@ public class TelaCadastroMarca extends JFrame {
 		setBounds(100, 100, 450, 110);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		setLocationRelativeTo(null);
+		
 		setContentPane(contentPane);
 		
 		edtNome = new JTextField();
@@ -96,7 +97,7 @@ public class TelaCadastroMarca extends JFrame {
 	}
 	
 	public void colocarEmInsercao() {
-		this.marca = null;
+		this.marca = new Marca();
 		this.limparCampos();
 		super.setVisible(true);
 	}

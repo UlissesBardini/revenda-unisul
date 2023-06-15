@@ -1,6 +1,7 @@
 package br.unisul.revendaunisul.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
@@ -25,6 +26,9 @@ public class ModeloService {
 
 	@Autowired
 	private ModelosRepository repository;
+	
+	@Autowired
+	private VeiculoService veiculoService;
 
 	@Autowired
 	private EntityManager em;
@@ -46,10 +50,13 @@ public class ModeloService {
 	}
 
 	public Modelo buscarPor(@NotNull(message = "O id do modelo não pode ser nulo") Integer id) {
-		return repository.buscarPor(id);
+		return Optional.of(repository.buscarPor(id))
+				.orElseThrow(() -> new IllegalArgumentException("O modelo com id '" + id + "' não existe."));
 	}
 
 	public void excluirPor(@NotNull(message = "O id do modelo não pode ser nulo") Integer id) {
+		Preconditions.checkArgument(!veiculoService.isExistePor(this.buscarPor(id)),
+				"Não é possível excluir o registro pois há veículos vinculados a ele");
 		repository.deleteById(id);
 	}
 	

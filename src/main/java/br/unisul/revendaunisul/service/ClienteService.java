@@ -1,11 +1,18 @@
 package br.unisul.revendaunisul.service;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import com.google.common.base.Preconditions;
 
 import br.unisul.revendaunisul.entity.Cliente;
 import br.unisul.revendaunisul.repository.ClientesRepository;
@@ -19,14 +26,47 @@ public class ClienteService {
 	@Autowired
 	private ClientesRepository repository;
 
+	@Autowired
+	private EntityManager em;
+	
+	private void validar(Cliente cliente) {
+		this.validarCpf(cliente);
+		this.validarTelefone(cliente);
+		this.validarIdade(cliente);
+	}
+	
+	private void validarCpf(Cliente cliente) {
+		String cpfPattern = "/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/";
+		Preconditions.checkArgument(cliente.getCpf().matches(cpfPattern), 
+					"O CPF do cliente é invalido");
+	}
+	
+	private void validarTelefone(Cliente cliente) {
+		String telefonePattern = "/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/";
+		Preconditions.checkArgument(cliente.getTelefone().matches(telefonePattern), 
+					"O telefone do cliente é inválido");
+	}
+	
+	private void validarIdade(Cliente cliente) {
+		int idade = Period.between(cliente.getDataDeNascimento(), LocalDate.now()).getYears();
+		Preconditions.checkArgument(idade >= 18, "O colaborador não pode ter menos de 18 anos");
+	}
+	
 	@Validated(AoInserir.class)
-	public Cliente inserir(@NotNull(message = "O cliente não pode ser nulo") @Valid Cliente novoCliente) {
+	public Cliente inserir(
+			@NotNull(message = "O cliente não pode ser nulo")
+			@Valid Cliente novoCliente) {
+		this.validar(novoCliente);
 		return this.repository.save(novoCliente);
 	}
 
 	@Validated(AoAlterar.class)
 	public Cliente alterar(@NotNull(message = "O cliente não pode ser nulo") @Valid Cliente cliente) {
-		return this.repository.save(cliente);
+		this.buscarPor(cliente.getId());
+		this.validar(cliente);
+		this.em.detach(repository.saveAndFlush(cliente));
+		this.em.clear();
+		return this.buscarPor(cliente.getId());
 	}
 
 	public Cliente buscarPor(@NotNull(message = "O id do cliente não pode ser nulo") Integer id) {
@@ -34,7 +74,13 @@ public class ClienteService {
 				.orElseThrow(() -> new IllegalArgumentException("O cliente com id '" + id + "' não existe."));
 	}
 
-	public void excluirPorId(@NotNull(message = "O id do cliente não pode ser nulo") Integer id) {
+	public void excluirPor(@NotNull(message = "O id do cliente não pode ser nulo") Integer id) {
+		this.buscarPor(id);
 		repository.deleteById(id);
+	}
+
+	public List<Cliente> listarPor(String text) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

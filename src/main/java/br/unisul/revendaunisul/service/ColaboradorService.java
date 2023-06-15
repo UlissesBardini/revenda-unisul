@@ -1,7 +1,11 @@
 package br.unisul.revendaunisul.service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
+import java.util.Optional;
 
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -12,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import com.google.common.base.Preconditions;
 
 import br.unisul.revendaunisul.entity.Colaborador;
+import br.unisul.revendaunisul.entity.Usuario;
 import br.unisul.revendaunisul.repository.ColaboradoresRepository;
 import br.unisul.revendaunisul.validation.AoAlterar;
 import br.unisul.revendaunisul.validation.AoInserir;
@@ -22,42 +27,68 @@ public class ColaboradorService {
 
 	@Autowired
 	private ColaboradoresRepository repository;
+	
+	@Autowired
+	private EntityManager em;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 
-	public void validar(Colaborador colaborador) {
+	private void validar(Colaborador colaborador) {
 		this.validarCpf(colaborador);
 		this.validarTelefone(colaborador);
+		this.validarIdade(colaborador);
 	}
 	
-	public void validarCpf(Colaborador colaborador) {
+	private void validarCpf(Colaborador colaborador) {
 		String cpfPattern = "/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/";
 		Preconditions.checkArgument(colaborador.getCpf().matches(cpfPattern), 
 					"O CPF do colaborador é invalido");
 	}
 	
-	public void validarTelefone(Colaborador colaborador) {
+	private void validarTelefone(Colaborador colaborador) {
 		String telefonePattern = "/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/";
 		Preconditions.checkArgument(colaborador.getTelefone().matches(telefonePattern), 
 					"O telefone do colaborador é inválido");
 	}
 	
+	private void validarIdade(Colaborador colaborador) {
+		int idade = Period.between(colaborador.getDataDeNascimento(), LocalDate.now()).getYears();
+		Preconditions.checkArgument(idade >= 18, "O colaborador não pode ter menos de 18 anos");
+	}
+	
 	@Validated(AoInserir.class)
 	public Colaborador inserir(
 			@NotNull(message = "O colaborador não pode ser nulo") @Valid Colaborador novoColaborador) {
+		this.validar(novoColaborador);
+		novoColaborador.setDataDeCadastro(LocalDate.now());
+		
+		Usuario novoUsuario = usuarioService.inserir(novoColaborador.getUsuario());
+		novoColaborador.setUsuario(novoUsuario);
 		
 		return this.repository.save(novoColaborador);
 	}
 
 	@Validated(AoAlterar.class)
-	public Colaborador alterar(@NotNull(message = "O colaborador não pode ser nulo") @Valid Colaborador colaborador) {
-		return this.repository.save(colaborador);
+	public Colaborador alterar(@NotNull(message = "O colaborador não pode ser nulo") @Valid Colaborador colaboradorSalvo) {
+		this.buscarPor(colaboradorSalvo.getId());
+		this.validar(colaboradorSalvo);
+		
+		Usuario usuarioSalvo = usuarioService.alterar(colaboradorSalvo.getUsuario());
+		colaboradorSalvo.setUsuario(usuarioSalvo);
+		
+		this.em.detach(repository.saveAndFlush(colaboradorSalvo));
+		this.em.clear();
+		return repository.buscarPor(colaboradorSalvo.getId());
 	}
 
 	public Colaborador buscarPor(@NotNull(message = "O id do colaborador não pode ser nulo") Integer id) {
-		return repository.findById(id)
+		return Optional.of(repository.buscarPor(id))
 				.orElseThrow(() -> new IllegalArgumentException("O colaborador com id '" + id + "' não existe."));
 	}
 
-	public void excluirPorId(@NotNull(message = "O id do colaborador não pode ser nulo") Integer id) {
+	public void excluirPor(@NotNull(message = "O id do colaborador não pode ser nulo") Integer id) {
+		this.buscarPor(id);
 		repository.deleteById(id);
 	}
 	

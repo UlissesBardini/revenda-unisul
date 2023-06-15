@@ -1,57 +1,81 @@
 package br.unisul.revendaunisul.view;
 
-import java.awt.EventQueue;
+import java.time.LocalDate;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.unisul.revendaunisul.entity.Colaborador;
+import br.unisul.revendaunisul.entity.Usuario;
 import br.unisul.revendaunisul.enums.Perfil;
+import br.unisul.revendaunisul.service.ColaboradorService;
+import br.unisul.revendaunisul.utils.Mascara;
 
 @Component
 public class TelaCadastroColaboradores extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField edtNome;
 	private JTextField edtDataNascimento;
 	private JTextField edtCpf;
 	private JTextField edtTelefone;
-	private JTextField textField_1;
-	private JPasswordField passwordField;
+	private JTextField edtLogin;
+	private JPasswordField edtSenha;
+	private JComboBox<Perfil> cbPerfil;
+	private Colaborador colaborador;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaCadastroColaboradores frame = new TelaCadastroColaboradores();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	@Autowired
+	private ColaboradorService service;
+	
+	private void limparCampos() {
+		edtNome.setText("");
+		edtDataNascimento.setText("");
+		edtCpf.setText("");
+		cbPerfil.setSelectedItem(0);
+		edtTelefone.setText("");
+		edtLogin.setText("");
+		edtSenha.setText("");
 	}
 
-	/**
-	 * Create the frame.
-	 */
+	private void preencherCampos(Colaborador colaborador) {
+		edtNome.setText(colaborador.getNomeCompleto());
+		edtDataNascimento.setText(colaborador.getDataDeNascimentoFormatada());
+		edtCpf.setText(colaborador.getCpf());
+		cbPerfil.setSelectedItem(colaborador.getUsuario().getPerfil());
+		edtTelefone.setText(colaborador.getTelefone());
+		edtLogin.setText(colaborador.getUsuario().getLogin());
+		edtSenha.setText(colaborador.getUsuario().getLogin());
+	}
+
+	public void colocarEmInsercao() {
+		this.colaborador = new Colaborador();
+		this.colaborador.setUsuario(new Usuario());
+		this.limparCampos();
+		setVisible(true);
+	}
+
+	public void colocarEmEdicao(Colaborador colaborador) {
+		this.colaborador = colaborador;
+		this.preencherCampos(colaborador);
+		setVisible(true);
+	}
+	
+	
 	public TelaCadastroColaboradores() {
 		setTitle("Cadastro Colaborador");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,35 +94,68 @@ public class TelaCadastroColaboradores extends JFrame {
 		
 		JLabel lblDtNascimento = new JLabel("Data de Nascimento:");
 		
-		edtDataNascimento = new JTextField();
+		edtDataNascimento = new JFormattedTextField(Mascara.criar("##/##/####"));
 		edtDataNascimento.setColumns(10);
 		
 		JLabel lblCpf = new JLabel("CPF:");
 		
-		edtCpf = new JTextField();
+		edtCpf = new JFormattedTextField(Mascara.criar("###.###.###-##"));
 		edtCpf.setColumns(10);
 		
-		JLabel lblPerfil = new JLabel("Perfil");
+		JLabel lblPerfil = new JLabel("Perfil:");
 		
-		JComboBox<Perfil> cbPerfil = new JComboBox<Perfil>();
+		cbPerfil = new JComboBox<Perfil>();
 		cbPerfil.addItem(Perfil.FUNCIONARIO);
 		cbPerfil.addItem(Perfil.GERENTE);
+		cbPerfil.setToolTipText("Selecione...");
 		
-		edtTelefone = new JTextField();
+		edtTelefone = new JFormattedTextField(Mascara.criar("(##)#####-####"));
 		edtTelefone.setColumns(10);
 		
 		JLabel lblTelefone = new JLabel("Telefone:");
 		
 		JLabel lblSenha = new JLabel("Senha:");
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		edtLogin = new JTextField();
+		edtLogin.setColumns(10);
 		
-		JLabel lblLogin = new JLabel("Login");
+		JLabel lblLogin = new JLabel("Login:");
 		
-		passwordField = new JPasswordField();
+		edtSenha = new JPasswordField();
 		
 		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(event -> {
+			try {
+				
+				this.colaborador.setCpf(edtCpf.getText());
+				this.colaborador.setNomeCompleto(edtNome.getText());
+				this.colaborador.setTelefone(edtTelefone.getText());
+				
+				String[] camposDaData = edtDataNascimento.getText().split("/");			
+				this.colaborador.setDataDeNascimento(
+						LocalDate.of(
+								Integer.parseInt(camposDaData[2]),
+								Integer.parseInt(camposDaData[1]),
+								Integer.parseInt(camposDaData[0])));
+				
+				Usuario usuario = this.colaborador.getUsuario();
+				usuario.setPerfil((Perfil) cbPerfil.getSelectedItem());
+				usuario.setLogin(edtLogin.getText());
+				usuario.setSenha(new String(edtSenha.getPassword()));
+
+				if (this.colaborador.getId() != null) {
+					this.colaborador = service.alterar(colaborador);
+					JOptionPane.showMessageDialog(contentPane, "Colaborador alterado com sucesso!");
+				} else {
+					this.colaborador = service.inserir(colaborador);
+					JOptionPane.showMessageDialog(contentPane, "Colaborador salvo com sucesso!");
+				}
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(contentPane, e.getMessage());
+			}
+		});
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -108,33 +165,33 @@ public class TelaCadastroColaboradores extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(lblNome)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(edtNome, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+							.addComponent(edtNome, GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblDtNascimento)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(edtDataNascimento, GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
+							.addComponent(edtDataNascimento, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblCpf, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblCpf, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblLogin, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
-									.addGap(24)
-									.addComponent(lblSenha, GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+									.addComponent(edtLogin, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(passwordField, GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
+									.addComponent(lblSenha)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(edtSenha, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE))
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(edtCpf, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
+									.addComponent(edtCpf, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(lblPerfil)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(cbPerfil, 0, 145, Short.MAX_VALUE)
+									.addComponent(cbPerfil, 0, 167, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblTelefone, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblTelefone, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE))))
+									.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 						.addComponent(btnSalvar, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
@@ -142,28 +199,29 @@ public class TelaCadastroColaboradores extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNome)
-						.addComponent(edtDataNascimento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblDtNascimento)
-						.addComponent(edtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblNome)
+							.addComponent(edtDataNascimento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(edtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblDtNascimento))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(edtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblCpf)
 						.addComponent(cbPerfil, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPerfil)
-						.addComponent(lblTelefone))
+						.addComponent(lblCpf)
+						.addComponent(lblTelefone)
+						.addComponent(lblPerfil))
 					.addGap(11)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(edtLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblLogin)
-						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(edtSenha, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblSenha))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSalvar)
-					.addContainerGap(20, Short.MAX_VALUE))
+					.addContainerGap(17, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
 	}

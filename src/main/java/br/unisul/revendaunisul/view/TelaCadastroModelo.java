@@ -50,7 +50,8 @@ public class TelaCadastroModelo extends JFrame {
 		setBounds(100, 100, 450, 193);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		setLocationRelativeTo(null);
+		
 		setContentPane(contentPane);
 		
 		edtNome = new JTextField();
@@ -83,12 +84,10 @@ public class TelaCadastroModelo extends JFrame {
 		JLabel lblMarca = new JLabel("Marca:");
 
 		cbMarca = new JComboBox<Marca>();
-		cbMarca.setToolTipText("Selecione...");
 		
 		JLabel lblCombustivel = new JLabel("Combustível:");
 		
 		cbCombustivel = new JComboBox<Combustivel>();
-		cbCombustivel.setToolTipText("Selecione...");
 		for (Combustivel c : Combustivel.values()) {
 			cbCombustivel.addItem(c);
 		}
@@ -96,7 +95,6 @@ public class TelaCadastroModelo extends JFrame {
 		JLabel lblTipo = new JLabel("Tipo:");
 		
 		cbTipo = new JComboBox<TipoDeVeiculo>();
-		cbTipo.setToolTipText("Selecione...");
 		for (TipoDeVeiculo t : TipoDeVeiculo.values()) {
 			cbTipo.addItem(t);
 		}
@@ -104,7 +102,6 @@ public class TelaCadastroModelo extends JFrame {
 		JLabel lblTransmissao = new JLabel("Transmissão:");
 
 		cbTransmissao = new JComboBox<Transmissao>();
-		cbTransmissao.setToolTipText("Selecione...");
 		for (Transmissao t : Transmissao.values()) {
 			cbTransmissao.addItem(t);
 		}
@@ -203,7 +200,7 @@ public class TelaCadastroModelo extends JFrame {
 	}
 	
 	public void colocarEmInsercao() {
-		this.modelo = null;
+		this.modelo = new Modelo();
 		this.limparCampos();
 		super.setVisible(true);
 	}

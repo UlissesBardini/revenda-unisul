@@ -31,4 +31,6 @@ public interface VeiculosRepository extends JpaRepository<Veiculo, Integer> {
 			+ "WHERE v.modelo = :modelo")
 	public List<Veiculo> listarPor(@Param("modelo") Modelo modelo);
 	
+	public boolean existsByModelo(Modelo modelo);
+	
 }

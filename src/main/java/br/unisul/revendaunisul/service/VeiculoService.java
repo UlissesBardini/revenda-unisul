@@ -2,6 +2,7 @@ package br.unisul.revendaunisul.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
@@ -49,7 +50,8 @@ public class VeiculoService {
 	}
 
 	public Veiculo buscarPor(@NotNull(message = "O id do veículo não pode ser nulo") Integer id) {
-		return repository.buscarPor(id);
+		return Optional.of(repository.buscarPor(id))
+				.orElseThrow(() -> new IllegalArgumentException("O veículo com id '" + id + "' não existe."));
 	}
 
 	public void excluirPor(@NotNull(message = "O id do veículo não pode ser nulo") Integer id) {
@@ -59,6 +61,10 @@ public class VeiculoService {
 	public List<Veiculo> listarPor(
 			@NotNull(message = "O modelo não pode ser nulo") Modelo modelo) {
 		return repository.listarPor(modelo);
+	}
+	
+	public boolean isExistePor(Modelo modelo) {
+		return repository.existsByModelo(modelo);
 	}
 	
 	private void validar(Veiculo veiculo) {

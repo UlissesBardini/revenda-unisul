@@ -1,5 +1,6 @@
 package br.unisul.revendaunisul.entity;
 
+import java.beans.Transient;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -51,4 +52,12 @@ public class Cliente {
 	@Column(name = "telefone")
 	private String telefone;
 
+	@Transient
+	public String getDataDeNascimentoFormatada() {
+		return String.format("%s/%s/%d",
+				String.format("%02d", this.dataDeNascimento.getDayOfMonth()),
+				String.format("%02d", this.dataDeNascimento.getMonthValue()),
+				this.dataDeNascimento.getYear());
+	}
+	
 }

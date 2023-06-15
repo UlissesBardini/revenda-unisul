@@ -1,5 +1,6 @@
 package br.unisul.revendaunisul.entity;
 
+import java.beans.Transient;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -10,11 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
 import br.unisul.revendaunisul.validation.AoAlterar;
@@ -56,8 +57,9 @@ public class Colaborador {
 	@Column(name = "dt_nascimento")
 	private LocalDate dataDeNascimento;
 
-	@FutureOrPresent(message = "A data de cadastro não deve ser posterior a data atual")
-	@NotNull(message = "A data de cadastro não deve ser nula")
+	@PastOrPresent(message = "A data de cadastro não deve ser posterior a data atual")
+	@Null(message = "A data de cadastro deve ser nula para inserção", groups = AoInserir.class)
+	@NotNull(message = "A data de cadastro não pode ser nula para alteração", groups = AoAlterar.class)
 	@Column(name = "dt_cadastro")
 	private LocalDate dataDeCadastro;
 
@@ -65,4 +67,20 @@ public class Colaborador {
 	@NotBlank(message = "O telefone não deve ser nulo")
 	@Column(name = "telefone")
 	private String telefone;
+	
+	@Transient
+	public String getDataDeNascimentoFormatada() {
+		return String.format("%s/%s/%d",
+				String.format("%02d", this.dataDeNascimento.getDayOfMonth()),
+				String.format("%02d", this.dataDeNascimento.getMonthValue()),
+				this.dataDeNascimento.getYear());
+	}
+	
+	@Transient
+	public String getDataDeCadastroFormatada() {
+		return String.format("%s/%s/%d",
+				String.format("%02d", this.dataDeCadastro.getDayOfMonth()),
+				String.format("%02d", this.dataDeCadastro.getMonthValue()),
+				this.dataDeCadastro.getYear());
+	}
 }

@@ -17,5 +17,11 @@ public interface ColaboradoresRepository extends JpaRepository<Colaborador, Inte
 					+ "JOIN FETCH c.usuario "
 					+ "WHERE Upper(c.nomeCompleto) LIKE Upper(:nomeCompleto) ")
 	public List<Colaborador> listarPor(@Param("nomeCompleto") String nomeCompleto);
+	
+	@Query(value = "SELECT c "
+				 + "FROM Colaborador c "
+				 + "JOIN FETCH c.usuario "
+				 + "WHERE c.id = :id ")
+	public Colaborador buscarPor(@Param("id") Integer id);
 
 }

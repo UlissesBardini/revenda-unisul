@@ -57,6 +57,7 @@ public class TelaListagemVeiculo extends JFrame {
 		setBounds(100, 100, 450, 325);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLocationRelativeTo(null);
 
 		setContentPane(contentPane);
 
@@ -107,12 +108,10 @@ public class TelaListagemVeiculo extends JFrame {
 		JLabel lblMarca = new JLabel("Modelo:");
 		
 		cbModelo = new JComboBox<Modelo>();
-		cbModelo.setToolTipText("Selecione...");
 
 		JLabel LblMarca = new JLabel("Marca:");
 
 		cbMarca = new JComboBox<Marca>();
-		cbMarca.setToolTipText("Selecione...");
 		
 		cbMarca.addItemListener(e -> {
 			if (e.getStateChange() == ItemEvent.SELECTED) {

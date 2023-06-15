@@ -41,6 +41,8 @@ public class TelaListagemMarca extends JFrame {
 		setTitle("Gerenciar Marcas");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		setLocationRelativeTo(null);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

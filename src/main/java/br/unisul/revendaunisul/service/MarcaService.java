@@ -59,7 +59,7 @@ public class MarcaService {
 	public void excluirPor(@NotNull(message = "O id da marca não pode ser nulo") Integer id) {
 		Preconditions.checkArgument(
 				!modeloService.isExistePor(this.buscarPor(id)),
-				"Não é possível excluir o registro pois há veículos vinculados a ele");
+				"Não é possível excluir o registro pois há modelos vinculados a ele");
 		repository.deleteById(id);
 	}
 	
