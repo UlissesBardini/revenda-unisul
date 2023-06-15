@@ -30,7 +30,7 @@ public class InitApp {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							
+
 							telaLogin.setVisible(true);
 							
 						} catch (Exception e) {

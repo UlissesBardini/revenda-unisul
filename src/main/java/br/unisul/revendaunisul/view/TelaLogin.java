@@ -1,9 +1,6 @@
 package br.unisul.revendaunisul.view;
 
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -23,15 +20,11 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.Preconditions;
 
 import br.unisul.revendaunisul.entity.Usuario;
-import br.unisul.revendaunisul.enums.Perfil;
 import br.unisul.revendaunisul.service.UsuarioService;
 
 @Component
 public class TelaLogin extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField edtLogin;
@@ -39,31 +32,10 @@ public class TelaLogin extends JFrame {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
-	private TelaListagemColaboradores telaListagemColaboradores;
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaLogin frame = new TelaLogin();
-					frame.setVisible(true);
-					//frame.setLocationRelativeTo(null);
+	private TelaPrincipal telaPrincipal;
 
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public TelaLogin() {
 		setTitle("Login - Revenda Unisul");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,9 +57,7 @@ public class TelaLogin extends JFrame {
 		lblSenha.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 14));
 
 		JButton btnLogar = new JButton("Logar");
-		btnLogar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
+		btnLogar.addActionListener(event -> {
 				try {
 					
 				String loginInformado = edtLogin.getText();
@@ -95,24 +65,16 @@ public class TelaLogin extends JFrame {
 
 				Preconditions.checkArgument(!edtLogin.getText().isBlank(), "O login é obrigatório");
 				Preconditions.checkArgument(!senhaInformada.isBlank(), "A senha é obrigatória");
-
-				Usuario usuarioEncontrado = usuarioService.buscarLogin(loginInformado, senhaInformada);
-
-				if (usuarioEncontrado.getPerfil() == Perfil.FUNCIONARIO) {
-					// redirect tela de cadastro funcionario
-				} else if (usuarioEncontrado.getPerfil() == Perfil.GERENTE) {
-					telaListagemColaboradores.setVisible(true);
-					setVisible(false);
-				}
-
 				
-				} catch (IllegalArgumentException iae) {
-					JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos");
-				} catch (Exception e2) {
-					e2.printStackTrace();
+				Usuario usuarioEncontrado = usuarioService.buscarLogin(loginInformado, senhaInformada);
+				
+				telaPrincipal.abrir(usuarioEncontrado.getPerfil());
+
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(contentPane, e.getMessage());
 				}
-			}
-		});
+			});
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)

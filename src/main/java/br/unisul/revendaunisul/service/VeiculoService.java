@@ -49,11 +49,10 @@ public class VeiculoService {
 	}
 
 	public Veiculo buscarPor(@NotNull(message = "O id do veículo não pode ser nulo") Integer id) {
-		return repository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("O veículo com id '" + id + "' não existe."));
+		return repository.buscarPor(id);
 	}
 
-	public void excluirPorId(@NotNull(message = "O id do veículo não pode ser nulo") Integer id) {
+	public void excluirPor(@NotNull(message = "O id do veículo não pode ser nulo") Integer id) {
 		repository.deleteById(id);
 	}
 	
@@ -79,18 +78,32 @@ public class VeiculoService {
 	}
 	
 	private void validarPlaca(Veiculo veiculo) {
+		String placa = veiculo.getPlaca();
+		
 		String placaPattern = "/[A-Z]{3}-[0-9][0-9A-Z][0-9]{2}/";
-		Preconditions.checkArgument(veiculo.getPlaca().matches(placaPattern),
+		Preconditions.checkArgument(placa.matches(placaPattern),
 				"A placa deve possuir o formato 'ABC-1234' ou 'ABC-1D23'");
 		
-		Veiculo veiculoEncontrado = repository.getByPlaca(veiculo.getPlaca());
+		Veiculo veiculoEncontrado = repository.getByPlaca(placa);
 		if (veiculoEncontrado != null) {
 			Preconditions.checkArgument(veiculoEncontrado.getId().equals(veiculo.getId()),
-					"A placa '" + veiculo.getPlaca() + "' já está associada a outro veículo");
+					"A placa '" + placa + "' já está associada a outro veículo");
 		}
 	}
 	
 	private void validarChassi(Veiculo veiculo) {
+		String chassi = veiculo.getChassi();
+		
+		String chassiPattern = "/[0-9a-zA-Z]{13}\\d{4}/";
+		Preconditions.checkArgument(chassi.matches(chassiPattern),
+				"O chassi deve possuir o formato 'XXXXXXXXXXXXXNNNN'");
+		
+		String[] caracteresProibidos = { "i", "I", "o", "O", "q", "Q" };
+		for (String caractere : caracteresProibidos) {
+			Preconditions.checkArgument(!chassi.contains(caractere),
+					"O chassi não pode conter os caracteres: " + String.join(", ", caracteresProibidos) + ".");
+		}
+		
 		Veiculo veiculoEncontrado = repository.getByChassi(veiculo.getChassi());
 		if (veiculoEncontrado != null) {
 			Preconditions.checkArgument(veiculoEncontrado.getId().equals(veiculo.getId()),

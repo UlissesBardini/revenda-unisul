@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.google.common.base.Preconditions;
+
 import br.unisul.revendaunisul.entity.Usuario;
 import br.unisul.revendaunisul.repository.UsuariosRepository;
 import br.unisul.revendaunisul.validation.AoAlterar;
@@ -46,7 +48,9 @@ public class UsuarioService {
 
 	// sem regras pois valido no input da tela
 	public Usuario buscarLogin(String login, String senha) {
-		return repository.buscarLogin(login, senha);
+		Usuario usuarioEncontrado = repository.buscarLogin(login, senha);
+		Preconditions.checkArgument(usuarioEncontrado != null, "O login ou senha estão incorretos.");
+		return usuarioEncontrado;
 	}
 
 }

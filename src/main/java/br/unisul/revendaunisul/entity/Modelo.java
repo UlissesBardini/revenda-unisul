@@ -18,9 +18,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import br.unisul.revendaunisul.enums.Combustivel;
 import br.unisul.revendaunisul.enums.TipoDeVeiculo;
 import br.unisul.revendaunisul.enums.Transmissao;
@@ -70,8 +67,8 @@ public class Modelo {
 
 	@Transient
 	public String toString() {
-		return this.marca.getNome() + " " + this.nome + " " + this.transmissao.toString() + " "
-				+ this.combustivel.toString();
+		return (this.marca != null ? this.marca.getNome() + " " : "")
+				+ this.nome + " " + this.transmissao.toString() + " " + this.combustivel.toString();
 	}
 
 }

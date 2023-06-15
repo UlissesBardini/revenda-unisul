@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -23,6 +24,10 @@ public class MarcaService {
 
 	@Autowired
 	private MarcasRepository repository;
+	
+	@Autowired
+	@Lazy
+	private ModeloService modeloService;
 	
 	@Autowired
 	private EntityManager em;
@@ -52,6 +57,9 @@ public class MarcaService {
 	}
 
 	public void excluirPor(@NotNull(message = "O id da marca não pode ser nulo") Integer id) {
+		Preconditions.checkArgument(
+				!modeloService.isExistePor(this.buscarPor(id)),
+				"Não é possível excluir o registro pois há veículos vinculados a ele");
 		repository.deleteById(id);
 	}
 	
