@@ -86,7 +86,7 @@ public class VeiculoService {
 	private void validarPlaca(Veiculo veiculo) {
 		String placa = veiculo.getPlaca();
 		
-		String placaPattern = "/[A-Z]{3}-[0-9][0-9A-Z][0-9]{2}/";
+		String placaPattern = "[A-Z]{3}-[0-9][0-9A-Z][0-9]{2}";
 		Preconditions.checkArgument(placa.matches(placaPattern),
 				"A placa deve possuir o formato 'ABC-1234' ou 'ABC-1D23'");
 		
@@ -100,7 +100,7 @@ public class VeiculoService {
 	private void validarChassi(Veiculo veiculo) {
 		String chassi = veiculo.getChassi();
 		
-		String chassiPattern = "/[0-9a-zA-Z]{13}\\d{4}/";
+		String chassiPattern = "[0-9a-zA-Z]{13}\\d{4}";
 		Preconditions.checkArgument(chassi.matches(chassiPattern),
 				"O chassi deve possuir o formato 'XXXXXXXXXXXXXNNNN'");
 		

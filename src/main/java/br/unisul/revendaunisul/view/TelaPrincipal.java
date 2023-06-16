@@ -1,5 +1,8 @@
 package br.unisul.revendaunisul.view;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFrame;
@@ -10,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import br.unisul.revendaunisul.enums.Perfil;
@@ -30,6 +34,10 @@ public class TelaPrincipal extends JFrame {
 	private Perfil perfil;
 	
 	@Autowired
+	@Lazy
+	private TelaLogin telaLogin;
+	
+	@Autowired
 	private TelaListagemMarca listagemMarca;
 
 	@Autowired
@@ -37,6 +45,12 @@ public class TelaPrincipal extends JFrame {
 
 	@Autowired
 	private TelaListagemVeiculo listagemVeiculo;
+	
+	@Autowired
+	private TelaListagemColaboradores telaListagemColaboradores;
+	
+	@Autowired
+	private TelaListagemClientes telaListagemClientes;
 
 	public void abrir(Perfil perfil) {
 		this.perfil = perfil;
@@ -55,12 +69,22 @@ public class TelaPrincipal extends JFrame {
 			mnCliente.setVisible(true);
 			mnVenda.setVisible(true);
 		}
+		setVisible(true);
+		telaLogin.setVisible(false);
 	}
 	
 	public TelaPrincipal() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setLocationRelativeTo(null);
+		
+		//captura o evento de click no X e redireciona para a tela de login
+				addWindowListener(new WindowAdapter() {
+					public void windowClosing(WindowEvent e) {
+						telaLogin.setVisible(true);
+						setVisible(false);
+					}
+				});
 		
 		opcoes = new JMenuBar();
 		setJMenuBar(opcoes);
@@ -95,12 +119,15 @@ public class TelaPrincipal extends JFrame {
 		mnColaborador = new JMenu("Colaborador");
 		opcoes.add(mnColaborador);
 		
-		JMenuItem itListagemColaborador = new JMenuItem(this.perfil == Perfil.GERENTE ? "Listagem" : "Cadastro");
+		JMenuItem itListagemColaborador = new JMenuItem(this.perfil == Perfil.GERENTE ? "Cadastro" : "Listagem");
 		itListagemColaborador.addActionListener(e -> {
 			if (this.perfil == Perfil.GERENTE) {
-				//TODO abrir tela de listagem de colaboradores
+				telaListagemColaboradores.setVisible(true);
+				setVisible(false);
 			} else {
 				//TODO abrir tela de cadastro de colaboradores em modo de edição com o registro do colaborador logado
+				
+				//nao entendi, nao vou mexer para nao prejudicar
 			}
 		});
 		mnColaborador.add(itListagemColaborador);
@@ -109,6 +136,10 @@ public class TelaPrincipal extends JFrame {
 		opcoes.add(mnCliente);
 		
 		JMenuItem itListagemCliente = new JMenuItem("Listagem");
+		itListagemCliente.addActionListener(e -> {
+			telaListagemClientes.setVisible(true);
+			setVisible(false);
+		});
 		mnCliente.add(itListagemCliente);
 		
 		mnVenda = new JMenu("Venda");

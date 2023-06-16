@@ -1,5 +1,7 @@
 package br.unisul.revendaunisul.view;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.GroupLayout;
@@ -17,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableColumnModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import br.unisul.revendaunisul.entity.Cliente;
@@ -35,13 +38,29 @@ public class TelaListagemClientes extends JFrame {
 	private ClienteService service;
 	
 	@Autowired
+	@Lazy
 	private TelaCadastroClientes cadastro;
 	
+	@Autowired
+	@Lazy
+	private TelaPrincipal telaPrincipal;
+	
+	public void atualizarTabela() {
+		table.updateUI();
+	}
+	
 	public TelaListagemClientes() {
-		setTitle("Gerenciar Marcas");
+		setTitle("Gerenciar Clientes");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				setVisible(false);
+				telaPrincipal.setVisible(true);
+			}
+		});
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -55,14 +74,14 @@ public class TelaListagemClientes extends JFrame {
 		
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(e -> {
-			List<Cliente> marcas = service.listarPor(edtFiltro.getText());
-			ClienteTableModel model = new ClienteTableModel(marcas);
+			List<Cliente> clientes = service.listarPor(edtFiltro.getText());
+			ClienteTableModel model = new ClienteTableModel(clientes);
 			table.setModel(model);
 			TableColumnModel cm = table.getColumnModel();
 			cm.getColumn(0).setPreferredWidth(25);
 			cm.getColumn(2).setPreferredWidth(90);
 			cm.getColumn(3).setPreferredWidth(90);
-			table.updateUI();
+			atualizarTabela();
 		});
 		
 		JButton btnNovo = new JButton("Novo");
@@ -75,10 +94,16 @@ public class TelaListagemClientes extends JFrame {
 			int linhaSelecionada = table.getSelectedRow();
 			ClienteTableModel model = (ClienteTableModel) table.getModel();
 			Cliente clienteSalvo = model.getBy(linhaSelecionada);
-			service.excluirPor(clienteSalvo.getId());
-			model.removeBy(linhaSelecionada);
-			table.updateUI();
-			JOptionPane.showMessageDialog(contentPane, "Cliente removido com sucesso!");
+			
+			int opcaoSelecionada = JOptionPane.showConfirmDialog(
+					contentPane, "Deseja realmente remover?", "Confirmação", JOptionPane.YES_NO_OPTION);
+			
+			if(opcaoSelecionada == JOptionPane.YES_OPTION) {
+				service.excluirPor(clienteSalvo.getId());
+				model.removeBy(linhaSelecionada);
+				JOptionPane.showMessageDialog(contentPane, "Cliente removido com sucesso!");
+			}
+			atualizarTabela();
 		});
 		
 		JButton btnEditar = new JButton("Editar");
@@ -94,11 +119,10 @@ public class TelaListagemClientes extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
 		
-		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
@@ -109,9 +133,9 @@ public class TelaListagemClientes extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnBuscar))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())

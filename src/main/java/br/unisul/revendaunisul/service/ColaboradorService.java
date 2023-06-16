@@ -41,13 +41,13 @@ public class ColaboradorService {
 	}
 	
 	private void validarCpf(Colaborador colaborador) {
-		String cpfPattern = "/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/";
+		String cpfPattern = "(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}";
 		Preconditions.checkArgument(colaborador.getCpf().matches(cpfPattern), 
 					"O CPF do colaborador é invalido");
 	}
 	
 	private void validarTelefone(Colaborador colaborador) {
-		String telefonePattern = "/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/";
+		String telefonePattern = "\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}";
 		Preconditions.checkArgument(colaborador.getTelefone().matches(telefonePattern), 
 					"O telefone do colaborador é inválido");
 	}
@@ -59,7 +59,7 @@ public class ColaboradorService {
 	
 	@Validated(AoInserir.class)
 	public Colaborador inserir(
-			@NotNull(message = "O colaborador não pode ser nulo") @Valid Colaborador novoColaborador) {
+			@Valid Colaborador novoColaborador) {
 		this.validar(novoColaborador);
 		novoColaborador.setDataDeCadastro(LocalDate.now());
 		

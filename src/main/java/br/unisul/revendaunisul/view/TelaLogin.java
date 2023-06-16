@@ -39,7 +39,7 @@ public class TelaLogin extends JFrame {
 	public TelaLogin() {
 		setTitle("Login - Revenda Unisul");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 398, 222);
+		setBounds(100, 100, 330, 205);
 		setLocationRelativeTo(null);
 		
 		contentPane = new JPanel();
@@ -78,18 +78,17 @@ public class TelaLogin extends JFrame {
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(lblLogin, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(edtLogin, GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+						.addComponent(edtSenha, GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED, 256, Short.MAX_VALUE)
+							.addComponent(btnLogar, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE))
 						.addComponent(lblSenha, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-						.addComponent(edtSenha, GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
-						.addComponent(edtLogin))
-					.addContainerGap(2, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-					.addContainerGap(266, Short.MAX_VALUE)
-					.addComponent(btnLogar, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblLogin, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -99,9 +98,9 @@ public class TelaLogin extends JFrame {
 					.addComponent(lblLogin, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
 					.addGap(5)
 					.addComponent(edtLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblSenha, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(1)
 					.addComponent(edtSenha, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnLogar)

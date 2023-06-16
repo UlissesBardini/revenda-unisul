@@ -26,12 +26,12 @@ public class UsuarioService {
 	private EntityManager em;
 
 	@Validated(AoInserir.class)
-	public Usuario inserir(@NotNull(message = "O usuário não pode ser nulo") @Valid Usuario novoUsuario) {
+	public Usuario inserir(@Valid Usuario novoUsuario) {
 		return this.repository.save(novoUsuario);
 	}
 
 	@Validated(AoAlterar.class)
-	public Usuario alterar(@NotNull(message = "O usuário não pode ser nulo") @Valid Usuario usuarioSalvo) {
+	public Usuario alterar(@Valid Usuario usuarioSalvo) {
 		this.em.detach(repository.saveAndFlush(usuarioSalvo));
 		this.em.clear();
 		return usuarioSalvo;

@@ -36,13 +36,13 @@ public class ClienteService {
 	}
 	
 	private void validarCpf(Cliente cliente) {
-		String cpfPattern = "/(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}/";
+		String cpfPattern = "(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}";
 		Preconditions.checkArgument(cliente.getCpf().matches(cpfPattern), 
 					"O CPF do cliente é invalido");
 	}
 	
 	private void validarTelefone(Cliente cliente) {
-		String telefonePattern = "/\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}/";
+		String telefonePattern = "\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}";
 		Preconditions.checkArgument(cliente.getTelefone().matches(telefonePattern), 
 					"O telefone do cliente é inválido");
 	}
@@ -79,8 +79,9 @@ public class ClienteService {
 		repository.deleteById(id);
 	}
 
-	public List<Cliente> listarPor(String text) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Cliente> listarPor(String nomeCompleto) {
+		nomeCompleto = nomeCompleto != null ? nomeCompleto : "";
+		String nomeParaBusca = "%" + nomeCompleto + "%";
+		return repository.listarPor(nomeParaBusca);
 	}
 }
