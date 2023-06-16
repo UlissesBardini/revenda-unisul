@@ -27,11 +27,13 @@ public class UsuarioService {
 
 	@Validated(AoInserir.class)
 	public Usuario inserir(@Valid Usuario novoUsuario) {
+		this.validar(novoUsuario);
 		return this.repository.save(novoUsuario);
 	}
 
 	@Validated(AoAlterar.class)
 	public Usuario alterar(@Valid Usuario usuarioSalvo) {
+		this.validar(usuarioSalvo);
 		this.em.detach(repository.saveAndFlush(usuarioSalvo));
 		this.em.clear();
 		return usuarioSalvo;
@@ -50,6 +52,13 @@ public class UsuarioService {
 		Usuario usuarioEncontrado = repository.buscarLogin(login, senha);
 		Preconditions.checkArgument(usuarioEncontrado != null, "O login ou senha estão incorretos.");
 		return usuarioEncontrado;
+	}
+	
+	private void validar(Usuario usuario) {
+		Usuario usuarioLogado = repository.findByLogin(usuario.getLogin());
+		if (usuarioLogado != null) {
+			Preconditions.checkArgument(usuarioLogado.getId().equals(usuario.getId()), "O login " + usuario.getLogin() + " já está sendo usado.");
+		}
 	}
 
 }

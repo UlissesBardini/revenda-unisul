@@ -69,7 +69,7 @@ public class TelaLogin extends JFrame {
 				
 				Usuario usuarioEncontrado = usuarioService.buscarLogin(loginInformado, senhaInformada);
 				
-				telaPrincipal.abrir(usuarioEncontrado.getPerfil());
+				telaPrincipal.abrir(usuarioEncontrado);
 
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(contentPane, e.getMessage());
@@ -107,5 +107,6 @@ public class TelaLogin extends JFrame {
 					.addContainerGap(33, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
+		contentPane.getRootPane().setDefaultButton(btnLogar);
 	}
 }

@@ -1,4 +1,4 @@
-package br.unisul.revendaunisul.view;
+package br.unisul.revendaunisul.view.cadastro;
 
 import java.time.LocalDate;
 
@@ -25,6 +25,7 @@ import br.unisul.revendaunisul.entity.Usuario;
 import br.unisul.revendaunisul.enums.Perfil;
 import br.unisul.revendaunisul.service.ColaboradorService;
 import br.unisul.revendaunisul.utils.Mascara;
+import br.unisul.revendaunisul.view.listagem.TelaListagemColaboradores;
 
 @Component
 public class TelaCadastroColaboradores extends JFrame {
@@ -81,6 +82,10 @@ public class TelaCadastroColaboradores extends JFrame {
 		setVisible(true);
 	}
 	
+	public void colocarEmEdicao(Usuario usuario) {
+		Colaborador colaboradorLogado = service.buscarPor(usuario);
+		colocarEmEdicao(colaboradorLogado);
+	}
 	
 	public TelaCadastroColaboradores() {
 		setTitle("Cadastro Colaborador");
@@ -181,37 +186,36 @@ public class TelaCadastroColaboradores extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnSalvar, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblNome)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(edtNome, GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
-							.addGap(12)
-							.addComponent(lblDtNascimento)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(edtDataNascimento, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(lblCpf, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblLogin, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblLogin, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+								.addComponent(lblCpf, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNome, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(edtLogin, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
+									.addComponent(edtLogin, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(lblSenha)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(edtSenha, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
+									.addGap(6)
+									.addComponent(edtSenha, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(edtCpf, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(edtCpf, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(lblPerfil)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(cbPerfil, 0, 193, Short.MAX_VALUE)
+									.addComponent(cbPerfil, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(lblTelefone, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+									.addGap(6)
+									.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(edtNome, GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-						.addComponent(btnSalvar, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
+									.addComponent(lblDtNascimento)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(edtDataNascimento, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)))))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -219,18 +223,18 @@ public class TelaCadastroColaboradores extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNome)
 						.addComponent(edtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNome)
 						.addComponent(edtDataNascimento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblDtNascimento))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(edtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbPerfil, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblCpf)
+						.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTelefone)
+						.addComponent(edtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblCpf)
 						.addComponent(lblPerfil)
-						.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cbPerfil, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(11)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(edtLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -239,7 +243,7 @@ public class TelaCadastroColaboradores extends JFrame {
 						.addComponent(lblSenha))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSalvar)
-					.addContainerGap(17, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
 	}

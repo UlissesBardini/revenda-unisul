@@ -67,8 +67,7 @@ public class Modelo {
 
 	@Transient
 	public String toString() {
-		return (this.marca != null ? this.marca.getNome() + " " : "")
-				+ this.nome + " " + this.transmissao.toString() + " " + this.combustivel.toString();
+		return this.nome + " " + this.combustivel.toString() + " " + this.transmissao.toString();
 	}
 
 }

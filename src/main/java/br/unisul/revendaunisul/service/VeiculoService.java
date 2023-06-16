@@ -90,7 +90,7 @@ public class VeiculoService {
 		Preconditions.checkArgument(placa.matches(placaPattern),
 				"A placa deve possuir o formato 'ABC-1234' ou 'ABC-1D23'");
 		
-		Veiculo veiculoEncontrado = repository.getByPlaca(placa);
+		Veiculo veiculoEncontrado = repository.findByPlaca(placa);
 		if (veiculoEncontrado != null) {
 			Preconditions.checkArgument(veiculoEncontrado.getId().equals(veiculo.getId()),
 					"A placa '" + placa + "' já está associada a outro veículo");
@@ -110,7 +110,7 @@ public class VeiculoService {
 					"O chassi não pode conter os caracteres: " + String.join(", ", caracteresProibidos) + ".");
 		}
 		
-		Veiculo veiculoEncontrado = repository.getByChassi(veiculo.getChassi());
+		Veiculo veiculoEncontrado = repository.findByChassi(veiculo.getChassi());
 		if (veiculoEncontrado != null) {
 			Preconditions.checkArgument(veiculoEncontrado.getId().equals(veiculo.getId()),
 					"O chassi '" + veiculo.getChassi() + "' já está associado a outro veículo");

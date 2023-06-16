@@ -1,4 +1,4 @@
-package br.unisul.revendaunisul.view;
+package br.unisul.revendaunisul.view.cadastro;
 
 import java.time.LocalDate;
 
@@ -20,6 +20,9 @@ import org.springframework.stereotype.Component;
 import br.unisul.revendaunisul.entity.Cliente;
 import br.unisul.revendaunisul.service.ClienteService;
 import br.unisul.revendaunisul.utils.Mascara;
+import br.unisul.revendaunisul.view.listagem.TelaListagemClientes;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 @Component
 public class TelaCadastroClientes extends JFrame {
@@ -41,7 +44,7 @@ public class TelaCadastroClientes extends JFrame {
 
 	public TelaCadastroClientes() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 470, 150);
+		setBounds(100, 100, 465, 150);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -69,6 +72,10 @@ public class TelaCadastroClientes extends JFrame {
 		JLabel lblTelefone = new JLabel("Telefone:");
 		
 		btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnSalvar.addActionListener(e -> {
 			
 			this.cliente.setCpf(edtCpf.getText());
@@ -98,47 +105,48 @@ public class TelaCadastroClientes extends JFrame {
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNome, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblCpf, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(edtNome, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(lblDtNascimento)
-							.addGap(6)
-							.addComponent(edtDataDeNascimento, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(edtCpf, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblTelefone, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
-							.addGap(4)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblCpf, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNome, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(edtNome, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(lblTelefone, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(edtCpf, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblDtNascimento)))
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(12)
-									.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE))
-								.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap())
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(edtDataDeNascimento, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(5)
+									.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)))))
+					.addGap(17))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNome)
 						.addComponent(edtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(edtDataDeNascimento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblDtNascimento)
-						.addComponent(lblNome))
+						.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblTelefone))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblCpf)
 						.addComponent(edtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(edtTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTelefone)
-						.addComponent(lblCpf))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(lblDtNascimento)
+						.addComponent(edtDataDeNascimento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSalvar)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
@@ -165,9 +173,9 @@ public class TelaCadastroClientes extends JFrame {
 		setVisible(true);
 	}
 
-	public void colocarEmEdicao(Cliente colaborador) {
-		this.cliente = colaborador;
-		this.preencherCampos(colaborador);
+	public void colocarEmEdicao(Cliente cliente) {
+		this.cliente = cliente;
+		this.preencherCampos(cliente);
 		setVisible(true);
 	}
 

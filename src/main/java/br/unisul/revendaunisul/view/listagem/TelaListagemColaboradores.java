@@ -1,4 +1,4 @@
-package br.unisul.revendaunisul.view;
+package br.unisul.revendaunisul.view.listagem;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 
 import br.unisul.revendaunisul.entity.Colaborador;
 import br.unisul.revendaunisul.service.ColaboradorService;
+import br.unisul.revendaunisul.view.TelaPrincipal;
+import br.unisul.revendaunisul.view.cadastro.TelaCadastroColaboradores;
 import br.unisul.revendaunisul.view.tables.ColaboradorTableModel;
 
 @Component
@@ -36,42 +38,42 @@ public class TelaListagemColaboradores extends JFrame {
 
 	@Autowired
 	private ColaboradorService service;
-	
+
 	@Autowired
 	private TelaCadastroColaboradores cadastro;
-	
+
 	@Autowired
 	@Lazy
 	private TelaPrincipal telaPrincipal;
-	
+
 	public void atualizarTabela() {
 		table.updateUI();
 	}
-	
+
 	public TelaListagemColaboradores() {
 		setTitle("Gerenciar Colaboradores");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setLocationRelativeTo(null);
-		
-		//captura o evento de click no X e redireciona para a tela principal
+
+		// captura o evento de click no X e redireciona para a tela principal
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				setVisible(false);
 				telaPrincipal.setVisible(true);
 			}
 		});
-		
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		
+
 		edtFiltro = new JTextField();
 		edtFiltro.setColumns(10);
-		
+
 		JLabel LblNome = new JLabel("Nome: ");
-		
+
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(e -> {
 			List<Colaborador> marcas = service.listarPor(edtFiltro.getText());
@@ -83,30 +85,34 @@ public class TelaListagemColaboradores extends JFrame {
 			cm.getColumn(3).setPreferredWidth(100);
 			atualizarTabela();
 		});
-		
+
 		JButton btnNovo = new JButton("Novo");
 		btnNovo.addActionListener(e -> {
 			cadastro.colocarEmInsercao();
 		});
-		
+
 		JButton btnExcluir = new JButton("Excluir");
-		btnExcluir.addActionListener(e -> {
+		btnExcluir.addActionListener(event -> {
 			int linhaSelecionada = table.getSelectedRow();
 			ColaboradorTableModel model = (ColaboradorTableModel) table.getModel();
 			Colaborador colaboradorSalvo = model.getBy(linhaSelecionada);
-			
-			int opcaoSelecionada = JOptionPane.showConfirmDialog(
-					contentPane, "Deseja realmente remover?", "Confirmação", JOptionPane.YES_NO_OPTION);
-			
-			if(opcaoSelecionada == JOptionPane.YES_OPTION) {
-				service.excluirPor(colaboradorSalvo.getId());
-				model.removeBy(linhaSelecionada);
-				JOptionPane.showMessageDialog(contentPane, "Colaborador removido com sucesso!");
+
+			int opcaoSelecionada = JOptionPane.showConfirmDialog(contentPane,
+					"Deseja realmente remover?", "Confirmação", JOptionPane.YES_NO_OPTION);
+
+			if (opcaoSelecionada == JOptionPane.YES_OPTION) {
+				try {
+					service.excluirPor(colaboradorSalvo.getId());
+					model.removeBy(linhaSelecionada);
+					JOptionPane.showMessageDialog(contentPane, "Colaborador removido com sucesso!");
+				} catch (Exception e) {
+					e.getMessage();
+				}
 			}
-			
+
 			atualizarTabela();
 		});
-		
+
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(e -> {
 			int linhaSelecionada = table.getSelectedRow();
@@ -114,51 +120,48 @@ public class TelaListagemColaboradores extends JFrame {
 			Colaborador colaboradorSalvo = model.getBy(linhaSelecionada);
 			cadastro.colocarEmEdicao(colaboradorSalvo);
 		});
-		
+
 		table = new JTable();
-		
+
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
-		
-		
+
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(LblNome)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(edtFiltro, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnBuscar))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(edtFiltro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(LblNome)
-						.addComponent(btnBuscar))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnNovo)
-						.addComponent(btnExcluir)
-						.addComponent(btnEditar))
-					.addContainerGap())
-		);
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 404,
+										Short.MAX_VALUE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(LblNome)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(edtFiltro, GroupLayout.DEFAULT_SIZE, 295,
+												Short.MAX_VALUE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(btnBuscar))
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 77,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 75,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 74,
+												GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap()));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(edtFiltro, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(LblNome).addComponent(btnBuscar))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnNovo).addComponent(btnExcluir)
+								.addComponent(btnEditar))
+						.addContainerGap()));
 		contentPane.setLayout(gl_contentPane);
 	}
 

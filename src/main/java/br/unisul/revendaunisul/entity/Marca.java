@@ -1,5 +1,7 @@
 package br.unisul.revendaunisul.entity;
 
+import java.beans.Transient;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,4 +37,9 @@ public class Marca {
 	@NotEmpty(message = "O nome da marca é obrigatório")
 	private String nome;
 
+	@Transient @Override
+	public String toString() {
+		return this.nome;
+	}
+	
 }

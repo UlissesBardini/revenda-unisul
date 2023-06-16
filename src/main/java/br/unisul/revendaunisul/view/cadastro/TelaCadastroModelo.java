@@ -1,4 +1,4 @@
-package br.unisul.revendaunisul.view;
+package br.unisul.revendaunisul.view.cadastro;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class TelaCadastroModelo extends JFrame {
 	public TelaCadastroModelo() {
 		setTitle("Cadastrar Modelo");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 450, 193);
+		setBounds(100, 100, 500, 193);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
@@ -113,27 +113,32 @@ public class TelaCadastroModelo extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(LblNome, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(edtNome, GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblMarca, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cbMarca, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblCombustivel)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cbCombustivel, 0, 163, Short.MAX_VALUE))
-						.addComponent(btnSalvar, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(10)
-							.addComponent(lblTipo)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cbTipo, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblTransmissao)
-							.addGap(3)
-							.addComponent(cbTransmissao, GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(LblNome, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+									.addGap(6))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(lblMarca, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(10)
+									.addComponent(lblTipo)
+									.addPreferredGap(ComponentPlacement.RELATED)))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(cbMarca, 0, 141, Short.MAX_VALUE)
+										.addComponent(cbTipo, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+										.addComponent(lblCombustivel)
+										.addComponent(lblTransmissao))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+										.addComponent(cbCombustivel, 0, 143, Short.MAX_VALUE)
+										.addComponent(cbTransmissao, Alignment.LEADING, 0, 143, Short.MAX_VALUE)))
+								.addComponent(edtNome, GroupLayout.PREFERRED_SIZE, 398, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(btnSalvar, Alignment.TRAILING))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -146,23 +151,18 @@ public class TelaCadastroModelo extends JFrame {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(cbCombustivel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblMarca)
 						.addComponent(cbMarca, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblCombustivel)
-						.addComponent(lblMarca))
+						.addComponent(lblCombustivel))
+					.addGap(13)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(13)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(cbTipo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(cbTransmissao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnSalvar))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(17)
-							.addComponent(lblTipo))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(17)
-							.addComponent(lblTransmissao)))
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+							.addComponent(cbTipo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblTipo)
+							.addComponent(lblTransmissao))
+						.addComponent(cbTransmissao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnSalvar)
 					.addContainerGap())
 		);
 		contentPane.setLayout(gl_contentPane);
@@ -174,11 +174,6 @@ public class TelaCadastroModelo extends JFrame {
 		for (Marca m : marcas) {
 			cbMarca.addItem(m);
 		}
-	}
-	
-	@Override
-	public void setVisible(boolean b) {
-		System.out.println("Não use o método 'setVisible()'");
 	}
 	
 	private void limparCampos() {

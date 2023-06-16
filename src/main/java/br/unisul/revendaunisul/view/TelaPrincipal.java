@@ -16,7 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import br.unisul.revendaunisul.entity.Usuario;
 import br.unisul.revendaunisul.enums.Perfil;
+import br.unisul.revendaunisul.view.cadastro.TelaCadastroColaboradores;
+import br.unisul.revendaunisul.view.listagem.TelaListagemClientes;
+import br.unisul.revendaunisul.view.listagem.TelaListagemColaboradores;
+import br.unisul.revendaunisul.view.listagem.TelaListagemMarca;
+import br.unisul.revendaunisul.view.listagem.TelaListagemModelo;
+import br.unisul.revendaunisul.view.listagem.TelaListagemVeiculo;
 
 @Component
 public class TelaPrincipal extends JFrame {
@@ -31,7 +38,7 @@ public class TelaPrincipal extends JFrame {
 	private JMenu mnCliente;
 	private JMenu mnVenda;
 	
-	private Perfil perfil;
+	private Usuario usuarioLogado;
 	
 	@Autowired
 	@Lazy
@@ -51,10 +58,13 @@ public class TelaPrincipal extends JFrame {
 	
 	@Autowired
 	private TelaListagemClientes telaListagemClientes;
+	
+	@Autowired
+	private TelaCadastroColaboradores telaCadastroColaboradores;
 
-	public void abrir(Perfil perfil) {
-		this.perfil = perfil;
-		if (this.perfil == Perfil.GERENTE) {
+	public void abrir(Usuario usuario) {
+		this.usuarioLogado = usuario;
+		if (this.usuarioLogado.getPerfil() == Perfil.GERENTE) {
 			mnMarca.setVisible(true);
 			mnModelo.setVisible(true);
 			mnVeiculo.setVisible(true);
@@ -118,16 +128,15 @@ public class TelaPrincipal extends JFrame {
 		
 		mnColaborador = new JMenu("Colaborador");
 		opcoes.add(mnColaborador);
+
+		JMenuItem itListagemColaborador = new JMenuItem("Listagem");
 		
-		JMenuItem itListagemColaborador = new JMenuItem(this.perfil == Perfil.GERENTE ? "Cadastro" : "Listagem");
 		itListagemColaborador.addActionListener(e -> {
-			if (this.perfil == Perfil.GERENTE) {
+			if (this.usuarioLogado.getPerfil() == Perfil.GERENTE) {
 				telaListagemColaboradores.setVisible(true);
 				setVisible(false);
 			} else {
-				//TODO abrir tela de cadastro de colaboradores em modo de edição com o registro do colaborador logado
-				
-				//nao entendi, nao vou mexer para nao prejudicar
+				telaCadastroColaboradores.colocarEmEdicao(this.usuarioLogado);
 			}
 		});
 		mnColaborador.add(itListagemColaborador);

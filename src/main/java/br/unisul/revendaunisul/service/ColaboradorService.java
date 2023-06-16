@@ -61,11 +61,11 @@ public class ColaboradorService {
 	public Colaborador inserir(
 			@Valid Colaborador novoColaborador) {
 		this.validar(novoColaborador);
-		novoColaborador.setDataDeCadastro(LocalDate.now());
 		
 		Usuario novoUsuario = usuarioService.inserir(novoColaborador.getUsuario());
 		novoColaborador.setUsuario(novoUsuario);
 		
+		novoColaborador.setDataDeCadastro(LocalDate.now());
 		return this.repository.save(novoColaborador);
 	}
 
@@ -96,5 +96,10 @@ public class ColaboradorService {
 		nomeCompleto = nomeCompleto != null ? nomeCompleto : "";
 		String nomeInformado = "%" + nomeCompleto + "%";
 		return repository.listarPor(nomeInformado);
+	}
+
+	public Colaborador buscarPor(Usuario usuario) {
+		return Optional.of(repository.buscarPor(usuario))
+				.orElseThrow(() -> new IllegalArgumentException("Não há um colaborador registrado para este usuario"));
 	}
 }

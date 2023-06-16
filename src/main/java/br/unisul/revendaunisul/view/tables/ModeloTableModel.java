@@ -9,7 +9,7 @@ import br.unisul.revendaunisul.entity.Modelo;
 public class ModeloTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
-	private static final int QTDE_COLUNAS = 2;
+	private static final int QTDE_COLUNAS = 4;
 	private List<Modelo> modelos;
 
 	public ModeloTableModel(List<Modelo> modelos) {

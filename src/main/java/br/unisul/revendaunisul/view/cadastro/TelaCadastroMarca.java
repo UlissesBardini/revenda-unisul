@@ -1,4 +1,4 @@
-package br.unisul.revendaunisul.view;
+package br.unisul.revendaunisul.view.cadastro;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -32,7 +32,7 @@ public class TelaCadastroMarca extends JFrame {
 	public TelaCadastroMarca() {
 		setTitle("Cadastrar Marca");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 450, 110);
+		setBounds(100, 100, 450, 115);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
@@ -68,10 +68,10 @@ public class TelaCadastroMarca extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(LblNome, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(LblNome)
+							.addGap(7)
 							.addComponent(edtNome, GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE))
-						.addComponent(btnSalvar, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnSalvar, Alignment.TRAILING))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -81,15 +81,10 @@ public class TelaCadastroMarca extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(edtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(LblNome))
-					.addPreferredGap(ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
 					.addComponent(btnSalvar))
 		);
 		contentPane.setLayout(gl_contentPane);
-	}
-	
-	@Override
-	public void setVisible(boolean b) {
-		System.out.println("Não use o método 'setVisible()'");
 	}
 	
 	private void limparCampos() {

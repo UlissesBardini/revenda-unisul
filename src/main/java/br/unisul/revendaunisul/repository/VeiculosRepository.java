@@ -20,9 +20,9 @@ public interface VeiculosRepository extends JpaRepository<Veiculo, Integer> {
 			+ "WHERE v.id = :id")
 	public Veiculo buscarPor(@Param("id") Integer id);
 	
-	public Veiculo getByPlaca(String placa);
+	public Veiculo findByPlaca(String placa);
 	
-	public Veiculo getByChassi(String chassi);
+	public Veiculo findByChassi(String chassi);
 
 	@Query("SELECT v "
 			+ "FROM Veiculo v "

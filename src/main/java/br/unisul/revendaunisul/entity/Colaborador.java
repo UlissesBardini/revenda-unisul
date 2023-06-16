@@ -58,7 +58,6 @@ public class Colaborador {
 	private LocalDate dataDeNascimento;
 
 	@PastOrPresent(message = "A data de cadastro não deve ser posterior a data atual")
-	@Null(message = "A data de cadastro deve ser nula para inserção", groups = AoInserir.class)
 	@NotNull(message = "A data de cadastro não pode ser nula para alteração", groups = AoAlterar.class)
 	@Column(name = "dt_cadastro")
 	private LocalDate dataDeCadastro;
