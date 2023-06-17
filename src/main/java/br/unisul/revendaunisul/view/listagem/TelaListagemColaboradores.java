@@ -14,8 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,9 +82,15 @@ public class TelaListagemColaboradores extends JFrame {
 			ColaboradorTableModel model = new ColaboradorTableModel(marcas);
 			table.setModel(model);
 			TableColumnModel cm = table.getColumnModel();
-			cm.getColumn(0).setPreferredWidth(75);
-			cm.getColumn(2).setPreferredWidth(80);
-			cm.getColumn(3).setPreferredWidth(100);
+			DefaultTableCellRenderer centralize = new DefaultTableCellRenderer();
+			centralize.setHorizontalAlignment(SwingConstants.CENTER);
+			cm.getColumn(0).setCellRenderer(centralize);
+			cm.getColumn(2).setCellRenderer(centralize);
+			cm.getColumn(3).setCellRenderer(centralize);
+			cm.getColumn(0).setPreferredWidth(70);
+			cm.getColumn(1).setPreferredWidth(134);
+			cm.getColumn(2).setPreferredWidth(90);
+			cm.getColumn(3).setPreferredWidth(110);
 			atualizarTabela();
 		});
 

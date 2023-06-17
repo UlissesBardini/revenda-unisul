@@ -14,8 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,9 +82,15 @@ public class TelaListagemClientes extends JFrame {
 			ClienteTableModel model = new ClienteTableModel(clientes);
 			table.setModel(model);
 			TableColumnModel cm = table.getColumnModel();
+			DefaultTableCellRenderer centralize = new DefaultTableCellRenderer();
+			centralize.setHorizontalAlignment(SwingConstants.CENTER);
+			cm.getColumn(0).setCellRenderer(centralize);
+			cm.getColumn(2).setCellRenderer(centralize);
+			cm.getColumn(3).setCellRenderer(centralize);
 			cm.getColumn(0).setPreferredWidth(25);
-			cm.getColumn(2).setPreferredWidth(90);
-			cm.getColumn(3).setPreferredWidth(90);
+			cm.getColumn(1).setPreferredWidth(189);
+			cm.getColumn(2).setPreferredWidth(95);
+			cm.getColumn(3).setPreferredWidth(95);
 			atualizarTabela();
 		});
 

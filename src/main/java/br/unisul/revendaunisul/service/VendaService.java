@@ -1,5 +1,8 @@
 package br.unisul.revendaunisul.service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -34,7 +37,11 @@ public class VendaService {
 				.orElseThrow(() -> new IllegalArgumentException("A venda com id '" + id + "' não existe."));
 	}
 
-	public void excluirPorId(@NotNull(message = "O id da venda não pode ser nulo") Integer id) {
+	public void excluirPor(@NotNull(message = "O id da venda não pode ser nulo") Integer id) {
 		repository.deleteById(id);
+	}
+
+	public List<Venda> listarPor(LocalDate dataInicio, LocalDate dataFim) {
+		return null;
 	}
 }

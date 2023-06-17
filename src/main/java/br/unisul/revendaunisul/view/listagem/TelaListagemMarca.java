@@ -15,7 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +77,11 @@ public class TelaListagemMarca extends JFrame {
 			MarcaTableModel model = new MarcaTableModel(marcas);
 			table.setModel(model);
 			TableColumnModel cm = table.getColumnModel();
+			DefaultTableCellRenderer centralize = new DefaultTableCellRenderer();
+			centralize.setHorizontalAlignment(SwingConstants.CENTER);
+			cm.getColumn(0).setCellRenderer(centralize);
 			cm.getColumn(0).setPreferredWidth(45);
+			cm.getColumn(1).setPreferredWidth(359);
 			table.updateUI();
 		});
 
@@ -119,42 +125,43 @@ public class TelaListagemMarca extends JFrame {
 		table.setFillsViewportHeight(true);
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 404,
-										Short.MAX_VALUE)
-								.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(LblNome)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(edtFiltro, GroupLayout.DEFAULT_SIZE, 295,
-												Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnBuscar))
-								.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 65,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 65,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 65,
-												GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap()));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(edtFiltro, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(LblNome).addComponent(btnBuscar))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnNovo).addComponent(btnExcluir)
-								.addComponent(btnEditar))
-						.addContainerGap()));
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(LblNome)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(edtFiltro, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnBuscar))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(btnEditar)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnExcluir)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(edtFiltro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(LblNome)
+						.addComponent(btnBuscar))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnNovo)
+						.addComponent(btnExcluir)
+						.addComponent(btnEditar))
+					.addContainerGap())
+		);
 		contentPane.setLayout(gl_contentPane);
 	}
 }
