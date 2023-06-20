@@ -123,7 +123,6 @@ public class TelaCadastroVenda extends JFrame {
 				
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(contentPane, e.getMessage());
-				e.printStackTrace();
 			}
 		});
 		
