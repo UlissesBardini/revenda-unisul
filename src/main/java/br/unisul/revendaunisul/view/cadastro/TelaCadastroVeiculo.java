@@ -74,10 +74,16 @@ public class TelaCadastroVeiculo extends JFrame {
 		cbMarca = new JComboBox<Marca>();
 		cbMarca.addItemListener(e -> {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
-				modelos = modeloService.listarPor((Marca) cbMarca.getSelectedItem());
-				cbModelo.removeAllItems();
-				for (Modelo m : modelos) {
-					cbModelo.addItem(m);
+				if (cbMarca.getSelectedItem() != null) {
+					cbModelo.setEnabled(true);
+					modelos = modeloService.listarPor((Marca) cbMarca.getSelectedItem());
+					cbModelo.removeAllItems();
+					for (Modelo m : modelos) {
+						cbModelo.addItem(m);
+					}
+				} else {
+					cbModelo.setEnabled(false);
+					cbModelo.removeAllItems();
 				}
 			}
 		});

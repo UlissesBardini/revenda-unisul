@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 
 import com.google.common.base.Preconditions;
 
+import br.unisul.revendaunisul.entity.Marca;
 import br.unisul.revendaunisul.entity.Modelo;
 import br.unisul.revendaunisul.entity.Veiculo;
 import br.unisul.revendaunisul.repository.VeiculosRepository;
@@ -126,6 +127,10 @@ public class VeiculoService {
 
 	public List<Veiculo> listarTodos() {
 		return repository.listarTodos();
+	}
+
+	public List<Veiculo> listarPor(Marca marcaSelecionada) {
+		return repository.listarPor(marcaSelecionada);
 	}
 	
 }

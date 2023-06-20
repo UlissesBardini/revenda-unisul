@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import br.unisul.revendaunisul.entity.Marca;
 import br.unisul.revendaunisul.entity.Modelo;
 import br.unisul.revendaunisul.entity.Veiculo;
 
@@ -40,5 +41,13 @@ public interface VeiculosRepository extends JpaRepository<Veiculo, Integer> {
 			+ "JOIN FETCH m.marca "
 			+ "WHERE v.status = 'N'")
 	public List<Veiculo> listarTodos();
+
+	@Query("SELECT v "
+			+ "FROM Veiculo v "
+			+ "JOIN FETCH v.modelo m "
+			+ "JOIN FETCH m.marca mm "
+			+ "WHERE v.status = 'N' "
+			+ "AND mm = :marca")
+	public List<Veiculo> listarPor(@Param("marca") Marca marca);
 	
 }

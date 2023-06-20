@@ -66,7 +66,17 @@ public class TelaListagemVeiculo extends JFrame {
 
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(e -> {
-			List<Veiculo> veiculos = service.listarPor((Modelo) cbModelo.getSelectedItem());
+			List<Veiculo> veiculos;
+			Modelo modeloSelecionado = (Modelo) cbModelo.getSelectedItem();
+			Marca marcaSelecionada = (Marca) cbMarca.getSelectedItem();
+			
+			if (modeloSelecionado != null) {				
+				 veiculos = service.listarPor(modeloSelecionado);
+			} else if (marcaSelecionada != null) {
+				veiculos = service.listarPor(marcaSelecionada);
+			} else {
+				veiculos = service.listarTodos();
+			}
 
 			VeiculoTableModel model = new VeiculoTableModel(veiculos);
 			table.setModel(model);
@@ -134,10 +144,14 @@ public class TelaListagemVeiculo extends JFrame {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				if (!cbMarca.getSelectedItem().equals(0)) {
 					cbModelo.removeAllItems();
+					cbModelo.addItem(null);
 					modelos = modeloService.listarPor((Marca) cbMarca.getSelectedItem());
 					for (Modelo m : modelos) {
 						cbModelo.addItem(m);
 					}
+				} else {
+					cbModelo.removeAllItems();
+					cbModelo.addItem(null);
 				}
 			}
 		});
@@ -201,6 +215,7 @@ public class TelaListagemVeiculo extends JFrame {
 	private void carregarOpcoes() {
 		marcas = marcaService.listarTodos();
 		cbMarca.removeAllItems();
+		cbMarca.addItem(null);
 		for (Marca m : marcas) {
 			cbMarca.addItem(m);
 		}
