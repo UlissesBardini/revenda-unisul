@@ -18,6 +18,11 @@ public interface VendasRepository extends JpaRepository<Venda, Integer> {
 
 	@Query("SELECT v "
 			+ "FROM Venda v "
+			+ "JOIN FETCH v.colaborador "
+			+ "JOIN FETCH v.cliente "
+			+ "JOIN FETCH v.veiculo vv "
+			+ "JOIN FETCH vv.modelo m "
+			+ "JOIN FETCH m.marca "
 			+ "WHERE v.data BETWEEN :dtInicio AND :dtFim")
 	public List<Venda> listarPor(
 			@Param("dtInicio") LocalDate dataInicio,
@@ -27,7 +32,9 @@ public interface VendasRepository extends JpaRepository<Venda, Integer> {
 			+ "FROM Venda v "
 			+ "JOIN FETCH v.colaborador "
 			+ "JOIN FETCH v.cliente "
-			+ "JOIN FETCH v.veiculo "
+			+ "JOIN FETCH v.veiculo vv "
+			+ "JOIN FETCH vv.modelo m "
+			+ "JOIN FETCH m.marca "
 			+ "WHERE v.id = :id")
 	public Venda buscarPor(@Param("id") Integer id);
 	

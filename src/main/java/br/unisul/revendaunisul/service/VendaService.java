@@ -42,7 +42,7 @@ public class VendaService {
 	@Validated(AoInserir.class)
 	public Venda inserir(@NotNull(message = "A venda não pode ser nula") @Valid Venda novaVenda) {
 		this.validar(novaVenda);
-		
+		novaVenda.setData(LocalDate.now());
 		Veiculo veiculoVendido = novaVenda.getVeiculo();
 		veiculoVendido.setStatus(StatusDoVeiculo.V);
 		veiculoService.alterar(veiculoVendido);
@@ -78,6 +78,8 @@ public class VendaService {
 		if (venda.getFormaDePagamento() == FormaDePagamento.PARCELADO) {
 			Preconditions.checkArgument(
 					venda.getQuantidadeDeParcelas() > 0, "A venda parcelada deve ter ao menos uma parcela.");
+		} else {
+			venda.setQuantidadeDeParcelas(0);
 		}
 	}
 	

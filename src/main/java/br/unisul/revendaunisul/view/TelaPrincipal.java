@@ -24,6 +24,7 @@ import br.unisul.revendaunisul.view.listagem.TelaListagemColaboradores;
 import br.unisul.revendaunisul.view.listagem.TelaListagemMarca;
 import br.unisul.revendaunisul.view.listagem.TelaListagemModelo;
 import br.unisul.revendaunisul.view.listagem.TelaListagemVeiculo;
+import br.unisul.revendaunisul.view.listagem.TelaListagemVenda;
 
 @Component
 public class TelaPrincipal extends JFrame {
@@ -54,13 +55,16 @@ public class TelaPrincipal extends JFrame {
 	private TelaListagemVeiculo listagemVeiculo;
 	
 	@Autowired
-	private TelaListagemColaboradores telaListagemColaboradores;
+	private TelaListagemColaboradores listagemColaboradores;
 	
 	@Autowired
-	private TelaListagemClientes telaListagemClientes;
+	private TelaListagemClientes listagemClientes;
 	
 	@Autowired
-	private TelaCadastroColaboradores telaCadastroColaboradores;
+	private TelaListagemVenda listagemVenda;
+	
+	@Autowired
+	private TelaCadastroColaboradores cadastroColaboradores;
 
 	public void abrir(Usuario usuario) {
 		this.usuarioLogado = usuario;
@@ -133,10 +137,10 @@ public class TelaPrincipal extends JFrame {
 		
 		itListagemColaborador.addActionListener(e -> {
 			if (this.usuarioLogado.getPerfil() == Perfil.GERENTE) {
-				telaListagemColaboradores.setVisible(true);
+				listagemColaboradores.setVisible(true);
 				setVisible(false);
 			} else {
-				telaCadastroColaboradores.colocarEmEdicao(this.usuarioLogado);
+				cadastroColaboradores.colocarEmEdicao(this.usuarioLogado);
 			}
 		});
 		mnColaborador.add(itListagemColaborador);
@@ -146,7 +150,7 @@ public class TelaPrincipal extends JFrame {
 		
 		JMenuItem itListagemCliente = new JMenuItem("Listagem");
 		itListagemCliente.addActionListener(e -> {
-			telaListagemClientes.setVisible(true);
+			listagemClientes.setVisible(true);
 			setVisible(false);
 		});
 		mnCliente.add(itListagemCliente);
@@ -155,6 +159,10 @@ public class TelaPrincipal extends JFrame {
 		opcoes.add(mnVenda);
 		
 		JMenuItem itListagemVenda = new JMenuItem("Listagem");
+		itListagemVenda.addActionListener(e -> {
+			listagemVenda.setVisible(true);
+		});
+		
 		mnVenda.add(itListagemVenda);
 		
 		contentPane = new JPanel();

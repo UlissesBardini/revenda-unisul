@@ -1,5 +1,6 @@
 package br.unisul.revendaunisul.entity;
 
+import java.beans.Transient;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -15,7 +16,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import javax.validation.constraints.Positive;
 
 import br.unisul.revendaunisul.enums.FormaDePagamento;
 import br.unisul.revendaunisul.validation.AoAlterar;
@@ -53,7 +53,6 @@ public class Venda {
 	private Veiculo veiculo;
 
 	@Column(name = "data")
-	@NotNull(message = "A data da venda não pode ser nula")
 	private LocalDate data;
 
 	@NotNull(message = "A forma de pagamento não pode ser nula")
@@ -62,7 +61,14 @@ public class Venda {
 	private FormaDePagamento formaDePagamento;
 
 	@Column(name = "qtde_parcelas")
-	@Positive(message = "A quantidade de parcelas deve ser positiva")
 	private int quantidadeDeParcelas;
 
+	@Transient
+	public String getDataFormatada() {
+		return String.format("%s/%s/%d",
+				String.format("%02d", this.data.getDayOfMonth()),
+				String.format("%02d", this.data.getMonthValue()),
+				this.data.getYear());
+	}
+	
 }

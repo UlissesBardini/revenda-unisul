@@ -54,7 +54,7 @@ public class VendaTableModel extends AbstractTableModel {
 		case 2:
 			return vendaAtual.getColaborador().getNomeCompleto();
 		case 3:
-			return vendaAtual.getData();
+			return vendaAtual.getDataFormatada();
 		default:
 			throw new IllegalArgumentException("Índice inválido");
 		}

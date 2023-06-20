@@ -16,6 +16,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.unisul.revendaunisul.entity.Cliente;
 import br.unisul.revendaunisul.entity.Colaborador;
@@ -27,6 +28,7 @@ import br.unisul.revendaunisul.service.ColaboradorService;
 import br.unisul.revendaunisul.service.VeiculoService;
 import br.unisul.revendaunisul.service.VendaService;
 
+@Component
 public class TelaCadastroVenda extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -55,7 +57,7 @@ public class TelaCadastroVenda extends JFrame {
 	
 
 	public TelaCadastroVenda() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 195);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -121,6 +123,7 @@ public class TelaCadastroVenda extends JFrame {
 				
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(contentPane, e.getMessage());
+				e.printStackTrace();
 			}
 		});
 		

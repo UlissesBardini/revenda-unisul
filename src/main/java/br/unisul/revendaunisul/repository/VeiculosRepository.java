@@ -17,8 +17,7 @@ public interface VeiculosRepository extends JpaRepository<Veiculo, Integer> {
 			+ "FROM Veiculo v "
 			+ "JOIN FETCH v.modelo m "
 			+ "JOIN FETCH m.marca "
-			+ "WHERE v.status = 'V' "
-			+ "AND v.id = :id")
+			+ "WHERE v.id = :id")
 	public Veiculo buscarPor(@Param("id") Integer id);
 	
 	public Veiculo findByPlaca(String placa);
@@ -29,7 +28,7 @@ public interface VeiculosRepository extends JpaRepository<Veiculo, Integer> {
 			+ "FROM Veiculo v "
 			+ "JOIN FETCH v.modelo m "
 			+ "JOIN FETCH m.marca "
-			+ "WHERE v.status = 'V' "
+			+ "WHERE v.status = 'N' "
 			+ "AND m = :modelo")
 	public List<Veiculo> listarPor(@Param("modelo") Modelo modelo);
 	
@@ -39,7 +38,7 @@ public interface VeiculosRepository extends JpaRepository<Veiculo, Integer> {
 			+ "FROM Veiculo v "
 			+ "JOIN FETCH v.modelo m "
 			+ "JOIN FETCH m.marca "
-			+ "WHERE v.status = 'V'")
+			+ "WHERE v.status = 'N'")
 	public List<Veiculo> listarTodos();
 	
 }

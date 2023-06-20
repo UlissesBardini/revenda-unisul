@@ -138,13 +138,13 @@ public class TelaCadastroVeiculo extends JFrame {
 				if (edtQuilometragem.getText().isBlank()) {
 					this.veiculo.setQuilometragem(0);
 				} else {
-					this.veiculo.setQuilometragem(getIntSemFormatacao(this.edtQuilometragem.getText().trim()));
+					this.veiculo.setQuilometragem(getNumeroSemFormatacao(this.edtQuilometragem.getText().trim()));
 				}
 
 				if (edtValor.getText().isBlank()) {
 					this.veiculo.setValor(0);
 				} else {
-					this.veiculo.setValor(getDoubleSemFormatacao(edtValor.getText().trim()));
+					this.veiculo.setValor(getNumeroSemFormatacao(edtValor.getText().trim()));
 				}
 
 				this.veiculo.setStatus(StatusDoVeiculo.N);
@@ -159,6 +159,7 @@ public class TelaCadastroVeiculo extends JFrame {
 
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(contentPane, e.getMessage());
+				e.printStackTrace();
 			}
 		});
 
@@ -295,22 +296,13 @@ public class TelaCadastroVeiculo extends JFrame {
 		}
 	}
 
-	private int getIntSemFormatacao(String n) {
+	private int getNumeroSemFormatacao(String n) {
 		String numeroSemPontos = "";
-		String[] casasDoNumero = n.split(".");
+		String[] casasDoNumero = n.split("\\.");
 		for (String casa : casasDoNumero) {
 			numeroSemPontos += casa;
 		}
 		return Integer.parseInt(numeroSemPontos);
-	}
-
-	private double getDoubleSemFormatacao(String n) {
-		String numeroSemPontos = "";
-		String[] casasDoNumero = n.split(".");
-		for (String casa : casasDoNumero) {
-			numeroSemPontos += casa;
-		}
-		return Double.parseDouble(numeroSemPontos.replace(',', '.'));
 	}
 
 }
