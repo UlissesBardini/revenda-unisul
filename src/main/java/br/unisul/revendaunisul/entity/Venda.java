@@ -29,9 +29,6 @@ import lombok.EqualsAndHashCode;
 @Entity(name = "Venda")
 public class Venda {
 
-	// id, id_colaborador, id_cliente, id_veiculo, data, forma_pagamento,
-	// qtde_parcelas
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include

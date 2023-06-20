@@ -1,21 +1,31 @@
 package br.unisul.revendaunisul.view.cadastro;
 
+import java.awt.event.ItemEvent;
+import java.util.List;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import br.unisul.revendaunisul.entity.Cliente;
 import br.unisul.revendaunisul.entity.Colaborador;
 import br.unisul.revendaunisul.entity.Veiculo;
 import br.unisul.revendaunisul.entity.Venda;
 import br.unisul.revendaunisul.enums.FormaDePagamento;
+import br.unisul.revendaunisul.service.ClienteService;
+import br.unisul.revendaunisul.service.ColaboradorService;
+import br.unisul.revendaunisul.service.VeiculoService;
+import br.unisul.revendaunisul.service.VendaService;
 
 public class TelaCadastroVenda extends JFrame {
 
@@ -26,6 +36,23 @@ public class TelaCadastroVenda extends JFrame {
 	private JComboBox<Colaborador> cbColaborador;
 	private JComboBox<FormaDePagamento> cbPagamento;
 	private JComboBox<Cliente> cbCliente;
+	private List<Veiculo> veiculos;
+	private List<Colaborador> colaboradores;
+	private List<Cliente> clientes;
+	private Venda venda;
+	
+	@Autowired
+	private VendaService service;
+	
+	@Autowired
+	private VeiculoService veiculoService;
+	
+	@Autowired
+	private ColaboradorService colaboradorService;
+	
+	@Autowired
+	private ClienteService clienteService;
+	
 
 	public TelaCadastroVenda() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,6 +73,20 @@ public class TelaCadastroVenda extends JFrame {
 		JLabel lblPagamento = new JLabel("Pagamento:");
 
 		cbPagamento = new JComboBox<FormaDePagamento>();
+		for (FormaDePagamento f : FormaDePagamento.values()) {
+			cbPagamento.addItem(f);
+		}
+		
+		cbPagamento.addItemListener(e -> {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				if (cbPagamento.getSelectedItem() == FormaDePagamento.A_VISTA) {
+					edtParcelas.setEnabled(false);
+					edtParcelas.setText("");
+				} else {
+					edtParcelas.setEnabled(true);
+				}
+			}
+		});
 		
 		JLabel lblCliente = new JLabel("Cliente:");
 		
@@ -57,6 +98,33 @@ public class TelaCadastroVenda extends JFrame {
 		edtParcelas.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Salvar");
+		btnNewButton.addActionListener(event -> {
+			try {
+				this.venda.setVeiculo((Veiculo) cbVeiculo.getSelectedItem());
+				this.venda.setColaborador((Colaborador) cbColaborador.getSelectedItem());
+				this.venda.setCliente((Cliente) cbCliente.getSelectedItem());
+				this.venda.setFormaDePagamento((FormaDePagamento) cbPagamento.getSelectedItem());
+				
+				if (edtParcelas.getText().isBlank()) {					
+					this.venda.setQuantidadeDeParcelas(0);
+				} else {
+					this.venda.setQuantidadeDeParcelas(Integer.parseInt(edtParcelas.getText().trim()));
+				}
+				
+				if (this.venda.getId() != null) {
+					this.venda = service.alterar(venda);
+					JOptionPane.showMessageDialog(contentPane, "Venda alterada com sucesso!");
+				} else {
+					this.venda = service.inserir(venda);
+					JOptionPane.showMessageDialog(contentPane, "Venda salva com sucesso!");
+				}
+				
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(contentPane, e.getMessage());
+			}
+		});
+		
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -116,14 +184,54 @@ public class TelaCadastroVenda extends JFrame {
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
+	
+	private void preencherCampos(Venda venda) {
+		this.carregarOpcoes();
+		cbVeiculo.setSelectedItem(venda.getVeiculo());
+		cbColaborador.setSelectedItem(venda.getColaborador());
+		cbCliente.setSelectedItem(venda.getCliente());
+		cbPagamento.setSelectedItem(venda.getFormaDePagamento());
+		edtParcelas.setText(String.valueOf(venda.getQuantidadeDeParcelas()));
+	}
+	
+	private void limparCampos() {
+		this.carregarOpcoes();
+		cbVeiculo.setSelectedItem(0);
+		cbColaborador.setSelectedItem(0);
+		cbCliente.setSelectedItem(0);
+		cbPagamento.setSelectedItem(0);
+		edtParcelas.setText("");
+	}
+	
+	private void carregarOpcoes() {
+		veiculos = veiculoService.listarTodos();
+		cbVeiculo.removeAllItems();
+		for (Veiculo v : veiculos) {
+			cbVeiculo.addItem(v);
+		}
+		
+		colaboradores = colaboradorService.listarTodos();
+		cbColaborador.removeAllItems();
+		for (Colaborador c : colaboradores) {
+			cbColaborador.addItem(c);
+		}
+		
+		clientes = clienteService.listarTodos();
+		cbCliente.removeAllItems();
+		for (Cliente c : clientes) {
+			cbCliente.addItem(c);
+		}
+	}
 
 	public void colocarEmEdicao(Venda vendaSalva) {
-		// TODO Auto-generated method stub
-		
+		this.venda = vendaSalva;
+		this.preencherCampos(vendaSalva);
+		this.setVisible(true);
 	}
 
 	public void colocarEmInsercao() {
-		// TODO Auto-generated method stub
-		
+		this.venda = new Venda();
+		this.limparCampos();
+		this.setVisible(true);
 	}
 }

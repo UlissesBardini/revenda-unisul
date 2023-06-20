@@ -82,4 +82,9 @@ public class Colaborador {
 				String.format("%02d", this.dataDeCadastro.getMonthValue()),
 				this.dataDeCadastro.getYear());
 	}
+	
+	@Transient
+	public String toString() {
+		return this.getNomeCompleto();
+	}
 }

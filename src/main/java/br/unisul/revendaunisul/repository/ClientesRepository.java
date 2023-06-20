@@ -16,5 +16,9 @@ public interface ClientesRepository extends JpaRepository<Cliente, Integer> {
 			+ "FROM Cliente c "
 			+ "WHERE Upper(c.nomeCompleto) LIKE Upper(:nomeCompleto)")
 	public List<Cliente> listarPor(@Param("nomeCompleto") String nomeCompleto);
+
+	@Query("SELECT c "
+			+ "FROM Cliente c ")
+	public List<Cliente> listarTodos();
 	
 }

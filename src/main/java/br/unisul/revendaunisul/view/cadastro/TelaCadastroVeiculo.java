@@ -56,178 +56,199 @@ public class TelaCadastroVeiculo extends JFrame {
 	private ModeloService modeloService;
 
 	public TelaCadastroVeiculo() {
-			setTitle("Cadastrar Veículo");
-			setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-			setBounds(100, 100, 539, 205);
-			contentPane = new JPanel();
-			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-			setLocationRelativeTo(null);
-			
-			setContentPane(contentPane);
+		setTitle("Cadastrar Veículo");
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setBounds(100, 100, 539, 205);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLocationRelativeTo(null);
 
-			JLabel lblModelo = new JLabel("Modelo:");
+		setContentPane(contentPane);
 
-			cbModelo = new JComboBox<Modelo>();
+		JLabel lblModelo = new JLabel("Modelo:");
 
-			JLabel lblMarca = new JLabel("Marca:");
+		cbModelo = new JComboBox<Modelo>();
 
-			cbMarca = new JComboBox<Marca>();
-			cbMarca.addItemListener(e -> {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					modelos = modeloService
-							.listarPor((Marca) cbMarca.getSelectedItem());
-					cbModelo.removeAllItems();
-					for (Modelo m : modelos) {
-						cbModelo.addItem(m);
-					}
+		JLabel lblMarca = new JLabel("Marca:");
+
+		cbMarca = new JComboBox<Marca>();
+		cbMarca.addItemListener(e -> {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				modelos = modeloService.listarPor((Marca) cbMarca.getSelectedItem());
+				cbModelo.removeAllItems();
+				for (Modelo m : modelos) {
+					cbModelo.addItem(m);
 				}
-			});
-			
-			JLabel lblAno = new JLabel("Ano:");
+			}
+		});
 
-			edtAno = new JFormattedTextField(Mascara.criar("####", false));
-			edtAno.setColumns(4);
-			
-			edtChassi = new JFormattedTextField(Mascara.criar("AAAAAAAAAAAAA####"));
-			edtChassi.setColumns(17);
+		JLabel lblAno = new JLabel("Ano:");
 
-			JLabel lblChassi = new JLabel("Chassi:");
+		edtAno = new JFormattedTextField(Mascara.criar("####", false));
+		edtAno.setColumns(4);
 
-			JLabel lblQuilometragem = new JLabel("Quilometragem:");
+		edtChassi = new JFormattedTextField(Mascara.criar("AAAAAAAAAAAAA####"));
+		edtChassi.setColumns(17);
 
-			NumberFormatter nf = new NumberFormatter();
-			nf.setAllowsInvalid(false);
-			nf.setMinimum(0);
-			
-			edtQuilometragem = new JFormattedTextField(nf);
-			edtQuilometragem.setColumns(4);
+		JLabel lblChassi = new JLabel("Chassi:");
 
-			JLabel lblPlaca = new JLabel("Placa:");
-			
-			edtPlaca = new JFormattedTextField(Mascara.criar("UUU-#A##"));
-			edtPlaca.setColumns(8);
-			
-			JLabel lblCor = new JLabel("Cor:");
+		JLabel lblQuilometragem = new JLabel("Quilometragem:");
 
-			edtCor = new JTextField();
-			edtCor.setColumns(8);
+		NumberFormatter nf = new NumberFormatter();
+		nf.setAllowsInvalid(false);
+		nf.setMinimum(0);
 
-			JLabel lblValor = new JLabel("Valor:");
+		edtQuilometragem = new JFormattedTextField(nf);
+		edtQuilometragem.setColumns(4);
 
-			edtValor = new JTextField();
-			edtValor.setColumns(8);
+		JLabel lblPlaca = new JLabel("Placa:");
 
-			JButton btnSalvar = new JButton("Salvar");
-			btnSalvar.addActionListener(event -> {
-				try {
-					this.veiculo.setModelo((Modelo) this.cbModelo.getSelectedItem());
-					this.veiculo.setAno(Integer.parseInt(this.edtAno.getText()));
+		edtPlaca = new JFormattedTextField(Mascara.criar("UUU-#A##"));
+		edtPlaca.setColumns(8);
+
+		JLabel lblCor = new JLabel("Cor:");
+
+		edtCor = new JTextField();
+		edtCor.setColumns(8);
+
+		JLabel lblValor = new JLabel("Valor:");
+
+		edtValor = new JFormattedTextField(nf);
+		edtValor.setColumns(8);
+
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(event -> {
+			try {
+				this.veiculo.setModelo((Modelo) this.cbModelo.getSelectedItem());
+				this.veiculo.setAno(Integer.parseInt(this.edtAno.getText().trim()));
+				this.veiculo.setCor(this.edtCor.getText().trim());
+
+				if (edtChassi.getText().equals("_________________")) {
+					this.veiculo.setChassi("");
+				} else {
 					this.veiculo.setChassi(this.edtChassi.getText());
-					this.veiculo.setCor(this.edtCor.getText());
-					this.veiculo.setPlaca(this.edtPlaca.getText());
-					this.veiculo
-							.setQuilometragem(Integer.parseInt(this.edtQuilometragem.getText()));
-					this.veiculo.setValor(Double.parseDouble(edtValor.getText()));
-					this.veiculo.setStatus(StatusDoVeiculo.N);
-
-					if (this.veiculo.getId() != null) {
-						this.veiculo = service.alterar(veiculo);
-						JOptionPane.showMessageDialog(contentPane, "Veículo alterado com sucesso!");
-					} else {
-						this.veiculo = service.inserir(veiculo);
-						JOptionPane.showMessageDialog(contentPane, "Veículo salvo com sucesso!");
-					}
-
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(contentPane, e.getMessage());
 				}
-			});
 
-			GroupLayout gl_contentPane = new GroupLayout(contentPane);
-			gl_contentPane.setHorizontalGroup(
-				gl_contentPane.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_contentPane.createSequentialGroup()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_contentPane.createSequentialGroup()
-								.addGap(17)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-									.addComponent(lblPlaca)
-									.addComponent(lblAno)))
-							.addGroup(gl_contentPane.createSequentialGroup()
-								.addContainerGap()
-								.addComponent(lblMarca, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)))
+				if (edtPlaca.getText().equals("___-____")) {
+					this.veiculo.setPlaca("");
+				} else {
+					this.veiculo.setPlaca(this.edtPlaca.getText());
+				}
+
+				if (edtQuilometragem.getText().isBlank()) {
+					this.veiculo.setQuilometragem(0);
+				} else {
+					this.veiculo.setQuilometragem(getIntSemFormatacao(this.edtQuilometragem.getText().trim()));
+				}
+
+				if (edtValor.getText().isBlank()) {
+					this.veiculo.setValor(0);
+				} else {
+					this.veiculo.setValor(getDoubleSemFormatacao(edtValor.getText().trim()));
+				}
+
+				this.veiculo.setStatus(StatusDoVeiculo.N);
+
+				if (this.veiculo.getId() != null) {
+					this.veiculo = service.alterar(veiculo);
+					JOptionPane.showMessageDialog(contentPane, "Veículo alterado com sucesso!");
+				} else {
+					this.veiculo = service.inserir(veiculo);
+					JOptionPane.showMessageDialog(contentPane, "Veículo salvo com sucesso!");
+				}
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(contentPane, e.getMessage());
+			}
+		});
+
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+						.addGroup(gl_contentPane
+								.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup().addGap(17)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+												.addComponent(lblPlaca).addComponent(lblAno)))
+								.addGroup(gl_contentPane
+										.createSequentialGroup().addContainerGap()
+										.addComponent(lblMarca, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)))
 						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_contentPane.createSequentialGroup()
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
+								.createSequentialGroup()
 								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(edtPlaca, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(lblCor, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(edtCor, GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(lblValor))
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(edtAno, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(lblChassi)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(edtChassi, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(lblQuilometragem, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)))
+										.addGroup(gl_contentPane.createSequentialGroup()
+												.addComponent(edtPlaca, GroupLayout.PREFERRED_SIZE, 86,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(lblCor, GroupLayout.PREFERRED_SIZE, 23,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(edtCor, GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+												.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblValor))
+										.addGroup(gl_contentPane.createSequentialGroup()
+												.addComponent(edtAno, GroupLayout.PREFERRED_SIZE, 48,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblChassi)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(edtChassi, GroupLayout.PREFERRED_SIZE, 128,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(lblQuilometragem, GroupLayout.DEFAULT_SIZE, 91,
+														Short.MAX_VALUE)))
 								.addPreferredGap(ComponentPlacement.RELATED)
 								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-									.addComponent(edtQuilometragem, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-									.addComponent(btnSalvar, Alignment.TRAILING)
-									.addComponent(edtValor, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)))
-							.addGroup(gl_contentPane.createSequentialGroup()
-								.addComponent(cbMarca, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(lblModelo, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-								.addGap(6)
-								.addComponent(cbModelo, 0, 248, Short.MAX_VALUE)))
-						.addContainerGap())
-			);
-			gl_contentPane.setVerticalGroup(
-				gl_contentPane.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_contentPane.createSequentialGroup()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-							.addGroup(gl_contentPane.createSequentialGroup()
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addGap(18)
-										.addComponent(lblMarca))
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addGap(14)
+										.addComponent(edtQuilometragem, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+										.addComponent(btnSalvar, Alignment.TRAILING).addComponent(
+												edtValor, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 80,
+												Short.MAX_VALUE)))
+								.addGroup(
+										gl_contentPane.createSequentialGroup()
+												.addComponent(cbMarca, GroupLayout.PREFERRED_SIZE, 125,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(lblModelo, GroupLayout.PREFERRED_SIZE, 46,
+														GroupLayout.PREFERRED_SIZE)
+												.addGap(6).addComponent(cbModelo, 0, 248, Short.MAX_VALUE)))
+						.addContainerGap()));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
+				.createSequentialGroup()
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_contentPane.createSequentialGroup().addGroup(gl_contentPane
+								.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup().addGap(18).addComponent(lblMarca))
+								.addGroup(gl_contentPane.createSequentialGroup().addGap(14)
 										.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-											.addComponent(cbMarca, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-											.addComponent(lblModelo))))
+												.addComponent(cbMarca, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(lblModelo))))
 								.addPreferredGap(ComponentPlacement.UNRELATED))
-							.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-								.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(cbModelo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addGap(14)))
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(edtAno, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblChassi)
-							.addComponent(edtChassi, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(edtQuilometragem, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblQuilometragem)
-							.addComponent(lblAno))
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblPlaca)
-							.addComponent(edtPlaca, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(edtCor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(edtValor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblCor)
-							.addComponent(lblValor))
-						.addGap(18)
-						.addComponent(btnSalvar)
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-			);
-			contentPane.setLayout(gl_contentPane);
+						.addGroup(Alignment.TRAILING,
+								gl_contentPane.createSequentialGroup()
+										.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(cbModelo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(14)))
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(edtAno, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblChassi)
+						.addComponent(edtChassi, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(edtQuilometragem, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblQuilometragem).addComponent(lblAno))
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(lblPlaca)
+						.addComponent(edtPlaca, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(edtCor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(edtValor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblCor).addComponent(lblValor))
+				.addGap(18).addComponent(btnSalvar).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		contentPane.setLayout(gl_contentPane);
 	}
 
 	private void limparCampos() {
@@ -265,13 +286,31 @@ public class TelaCadastroVeiculo extends JFrame {
 		this.preencherCampos(veiculo);
 		setVisible(true);
 	}
-	
+
 	private void carregarOpcoes() {
 		marcas = marcaService.listarTodos();
 		cbMarca.removeAllItems();
 		for (Marca m : marcas) {
 			cbMarca.addItem(m);
 		}
+	}
+
+	private int getIntSemFormatacao(String n) {
+		String numeroSemPontos = "";
+		String[] casasDoNumero = n.split(".");
+		for (String casa : casasDoNumero) {
+			numeroSemPontos += casa;
+		}
+		return Integer.parseInt(numeroSemPontos);
+	}
+
+	private double getDoubleSemFormatacao(String n) {
+		String numeroSemPontos = "";
+		String[] casasDoNumero = n.split(".");
+		for (String casa : casasDoNumero) {
+			numeroSemPontos += casa;
+		}
+		return Double.parseDouble(numeroSemPontos.replace(',', '.'));
 	}
 
 }

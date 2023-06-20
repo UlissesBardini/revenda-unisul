@@ -1,5 +1,7 @@
 package br.unisul.revendaunisul.view.listagem;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.GroupLayout;
@@ -54,8 +56,27 @@ public class TelaListagemVenda extends JFrame {
 		setContentPane(contentPane);
 
 		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(e -> {
-			List<Venda> vendas = service.listarPor(null, null);
+		btnBuscar.addActionListener(event -> {
+			String[] camposDaDataInicio;
+			String[] camposDaDataFim;
+			LocalDate dataInicio;
+			LocalDate dataFim;
+			List<Venda> vendas = new ArrayList<>();
+
+			try {
+				camposDaDataInicio = edtDataInicio.getText().split("/");
+				camposDaDataFim = edtDataFim.getText().split("/");
+
+				dataInicio = LocalDate.of(Integer.parseInt(camposDaDataInicio[2]),
+						Integer.parseInt(camposDaDataInicio[1]), Integer.parseInt(camposDaDataInicio[0]));
+
+				dataFim = LocalDate.of(Integer.parseInt(camposDaDataFim[2]), Integer.parseInt(camposDaDataFim[1]),
+						Integer.parseInt(camposDaDataFim[0]));
+
+				vendas = service.listarPor(dataInicio, dataFim);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(contentPane, e.getMessage());
+			}
 
 			VendaTableModel model = new VendaTableModel(vendas);
 			table.setModel(model);
@@ -82,8 +103,8 @@ public class TelaListagemVenda extends JFrame {
 			VendaTableModel model = (VendaTableModel) table.getModel();
 			Venda vendaSalva = model.getBy(linhaSelecionada);
 
-			int opcaoSelecionada = JOptionPane.showConfirmDialog(contentPane,
-					"Deseja realmente remover?", "Confirmação", JOptionPane.YES_NO_OPTION);
+			int opcaoSelecionada = JOptionPane.showConfirmDialog(contentPane, "Deseja realmente remover?",
+					"Confirmação", JOptionPane.YES_NO_OPTION);
 
 			if (opcaoSelecionada == JOptionPane.YES_OPTION) {
 				try {
@@ -108,66 +129,53 @@ public class TelaListagemVenda extends JFrame {
 		table = new JTable();
 
 		JScrollPane scrollPane = new JScrollPane(table);
-		table.setFillsViewportHeight(true);		
-		
+		table.setFillsViewportHeight(true);
+
 		JLabel lblDataInicio = new JLabel("Data Início:");
-		
+
 		edtDataInicio = new JFormattedTextField(Mascara.criar("##/##/####"));
 		edtDataInicio.setColumns(10);
-		
+
 		JLabel lblNewLabel = new JLabel("Data Fim:");
-		
+
 		edtDataFim = new JFormattedTextField(Mascara.criar("##/##/####"));
 		edtDataFim.setColumns(10);
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-							.addComponent(btnEditar)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnExcluir)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-							.addComponent(lblDataInicio)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(edtDataInicio, GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel)
-							.addGap(6)
-							.addComponent(edtDataFim, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnBuscar)))
-					.addContainerGap())
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
+				.createSequentialGroup().addContainerGap()
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+						.addGroup(gl_contentPane.createSequentialGroup().addComponent(btnEditar)
+								.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnExcluir)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createSequentialGroup().addComponent(lblDataInicio)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(edtDataInicio, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(lblNewLabel).addGap(6)
+								.addComponent(edtDataFim, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnBuscar)))
+				.addContainerGap()));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(btnBuscar))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(17)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblDataInicio)
-								.addComponent(edtDataFim, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(edtDataInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel))))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnNovo)
-						.addComponent(btnEditar)
-						.addComponent(btnExcluir))
-					.addContainerGap())
-		);
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
+										.addComponent(btnBuscar))
+								.addGroup(gl_contentPane.createSequentialGroup().addGap(17)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+												.addComponent(edtDataFim, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(lblNewLabel)
+												.addComponent(edtDataInicio, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(lblDataInicio))))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(btnNovo)
+								.addComponent(btnEditar).addComponent(btnExcluir))
+						.addContainerGap()));
 		contentPane.setLayout(gl_contentPane);
 	}
 

@@ -30,5 +30,9 @@ public interface ColaboradoresRepository extends JpaRepository<Colaborador, Inte
 			+ "JOIN FETCH c.usuario "
 			+ "WHERE c.usuario = :usuario")
 	public Colaborador buscarPor(@Param("usuario") Usuario usuario);
+
+	@Query("SELECT c"
+			+ "FROM Colaborador c")
+	public List<Colaborador> listarTodos();
 	
 }

@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -29,6 +30,10 @@ public class VeiculoService {
 	
 	@Autowired
 	private EntityManager em;
+	
+	@Autowired
+	@Lazy
+	private VendaService vendaService;
 
 	@Validated(AoInserir.class)
 	public Veiculo inserir(
@@ -55,6 +60,8 @@ public class VeiculoService {
 	}
 
 	public void excluirPor(@NotNull(message = "O id do veículo não pode ser nulo") Integer id) {
+		this.buscarPor(id);
+		Preconditions.checkArgument(!vendaService.isExistePor(this.buscarPor(id)), "O veículo já está vinculado a uma venda");
 		repository.deleteById(id);
 	}
 	
@@ -115,6 +122,10 @@ public class VeiculoService {
 			Preconditions.checkArgument(veiculoEncontrado.getId().equals(veiculo.getId()),
 					"O chassi '" + veiculo.getChassi() + "' já está associado a outro veículo");
 		}
+	}
+
+	public List<Veiculo> listarTodos() {
+		return repository.listarTodos();
 	}
 	
 }

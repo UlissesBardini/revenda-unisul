@@ -33,6 +33,9 @@ public class ColaboradorService {
 	
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private VendaService vendaService;
 
 	private void validar(Colaborador colaborador) {
 		this.validarCpf(colaborador);
@@ -89,6 +92,7 @@ public class ColaboradorService {
 
 	public void excluirPor(@NotNull(message = "O id do colaborador não pode ser nulo") Integer id) {
 		this.buscarPor(id);
+		Preconditions.checkArgument(!vendaService.isExistePor(this.buscarPor(id)), "O colaborador já está vinculado a uma venda");
 		repository.deleteById(id);
 	}
 	
@@ -101,5 +105,9 @@ public class ColaboradorService {
 	public Colaborador buscarPor(Usuario usuario) {
 		return Optional.of(repository.buscarPor(usuario))
 				.orElseThrow(() -> new IllegalArgumentException("Não há um colaborador registrado para este usuario"));
+	}
+
+	public List<Colaborador> listarTodos() {
+		return repository.listarTodos();
 	}
 }

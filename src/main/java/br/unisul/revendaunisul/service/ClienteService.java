@@ -29,6 +29,9 @@ public class ClienteService {
 	@Autowired
 	private EntityManager em;
 	
+	@Autowired
+	private VendaService vendaService;
+	
 	private void validar(Cliente cliente) {
 		this.validarCpf(cliente);
 		this.validarTelefone(cliente);
@@ -76,6 +79,7 @@ public class ClienteService {
 
 	public void excluirPor(@NotNull(message = "O id do cliente não pode ser nulo") Integer id) {
 		this.buscarPor(id);
+		Preconditions.checkArgument(!vendaService.isExistePor(this.buscarPor(id)), "O cliente já está vinculado a uma venda");
 		repository.deleteById(id);
 	}
 
@@ -84,4 +88,9 @@ public class ClienteService {
 		String nomeParaBusca = "%" + nomeCompleto + "%";
 		return repository.listarPor(nomeParaBusca);
 	}
+
+	public List<Cliente> listarTodos() {
+		return repository.listarTodos();
+	}
+
 }

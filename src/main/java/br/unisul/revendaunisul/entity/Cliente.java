@@ -60,4 +60,9 @@ public class Cliente {
 				this.dataDeNascimento.getYear());
 	}
 	
+	@Transient
+	public String toString() {
+		return this.getNomeCompleto();
+	}
+	
 }
