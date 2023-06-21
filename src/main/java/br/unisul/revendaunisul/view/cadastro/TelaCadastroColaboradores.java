@@ -66,7 +66,7 @@ public class TelaCadastroColaboradores extends JFrame {
 		cbPerfil.setSelectedItem(colaborador.getUsuario().getPerfil());
 		edtTelefone.setText(colaborador.getTelefone());
 		edtLogin.setText(colaborador.getUsuario().getLogin());
-		edtSenha.setText(colaborador.getUsuario().getLogin());
+		edtSenha.setText(colaborador.getUsuario().getSenha());
 	}
 
 	public void colocarEmInsercao() {
@@ -140,15 +140,16 @@ public class TelaCadastroColaboradores extends JFrame {
 				this.colaborador.setCpf(edtCpf.getText());
 				this.colaborador.setNomeCompleto(edtNome.getText());
 				this.colaborador.setTelefone(edtTelefone.getText());
-				
+				try {
 				String[] camposDaData = edtDataNascimento.getText().split("/");			
 				this.colaborador.setDataDeNascimento(
 						LocalDate.of(
 								Integer.parseInt(camposDaData[2]),
 								Integer.parseInt(camposDaData[1]),
 								Integer.parseInt(camposDaData[0])));
-				
-				System.err.println(this.colaborador);
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(contentPane, "A data de nascimento inserida é inválida");
+				}
 				
 				if(this.colaborador.getUsuario().getId() != null ) {
 					this.usuario = colaborador.getUsuario();

@@ -77,17 +77,17 @@ public class TelaCadastroClientes extends JFrame {
 			}
 		});
 		btnSalvar.addActionListener(e -> {
-
+			try {
 			this.cliente.setNomeCompleto(edtNome.getText().trim());
 
 			if (edtCpf.getText().equals("___.___.___-__")) {
-				this.cliente.setCpf("");
+				throw new IllegalArgumentException("O CPF é obrigatório");
 			} else {
 				this.cliente.setCpf(edtCpf.getText());
 			}
 
 			if (edtTelefone.getText().equals("(__)_____-____")) {
-				this.cliente.setTelefone("");
+				throw new IllegalArgumentException("O telefone é obrigatório");
 			} else {
 				this.cliente.setTelefone(edtTelefone.getText());
 			}
@@ -106,6 +106,9 @@ public class TelaCadastroClientes extends JFrame {
 			}
 
 			setVisible(false);
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(contentPane, ex.getMessage());
+			}
 
 		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);

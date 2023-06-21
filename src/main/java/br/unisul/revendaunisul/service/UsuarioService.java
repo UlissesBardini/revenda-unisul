@@ -44,7 +44,7 @@ public class UsuarioService {
 				.orElseThrow(() -> new IllegalArgumentException("O usuário com id '" + id + "' não existe."));
 	}
 
-	public void excluirPorId(@NotNull(message = "O id do usuário não pode ser nulo") Integer id) {
+	public void excluirPor(@NotNull(message = "O id do usuário não pode ser nulo") Integer id) {
 		repository.deleteById(id);
 	}
 

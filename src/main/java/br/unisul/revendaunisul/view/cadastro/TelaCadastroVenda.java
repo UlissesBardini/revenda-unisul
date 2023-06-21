@@ -98,6 +98,7 @@ public class TelaCadastroVenda extends JFrame {
 		
 		edtParcelas = new JTextField();
 		edtParcelas.setColumns(10);
+		edtParcelas.setEnabled(false);
 		
 		JButton btnNewButton = new JButton("Salvar");
 		btnNewButton.addActionListener(event -> {

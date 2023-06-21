@@ -279,7 +279,7 @@ public class TelaCadastroVeiculo extends JFrame {
 		edtQuilometragem.setText(String.valueOf(veiculo.getQuilometragem()));
 		edtPlaca.setText(veiculo.getPlaca());
 		edtCor.setText(veiculo.getCor());
-		edtValor.setText(String.valueOf(veiculo.getValor()));
+		edtValor.setText(String.valueOf((int)veiculo.getValor()));
 	}
 
 	public void colocarEmInsercao() {

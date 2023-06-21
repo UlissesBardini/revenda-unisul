@@ -91,8 +91,9 @@ public class ColaboradorService {
 	}
 
 	public void excluirPor(@NotNull(message = "O id do colaborador não pode ser nulo") Integer id) {
-		this.buscarPor(id);
+		Colaborador colaboradorSalvo = this.buscarPor(id);
 		Preconditions.checkArgument(!vendaService.isExistePor(this.buscarPor(id)), "O colaborador já está vinculado a uma venda");
+		usuarioService.excluirPor(colaboradorSalvo.getUsuario().getId());
 		repository.deleteById(id);
 	}
 	
