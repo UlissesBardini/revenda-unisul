@@ -65,18 +65,26 @@ public class TelaListagemVenda extends JFrame {
 
 			try {
 				try {
-					camposDaDataInicio = edtDataInicio.getText().split("/");
-					dataInicio = LocalDate.of(Integer.parseInt(camposDaDataInicio[2]),
-							Integer.parseInt(camposDaDataInicio[1]),
-							Integer.parseInt(camposDaDataInicio[0]));
+					if (!edtDataInicio.getText().equals("__/__/__")) {
+						dataInicio = null;
+					} else {
+						camposDaDataInicio = edtDataInicio.getText().split("/");
+						dataInicio = LocalDate.of(Integer.parseInt(camposDaDataInicio[2]),
+								Integer.parseInt(camposDaDataInicio[1]),
+								Integer.parseInt(camposDaDataInicio[0]));
+					}
 				} catch (Exception e2) {
 					throw new IllegalArgumentException("A data de início inserida é inválida");
 				}
 				try {
-					camposDaDataFim = edtDataFim.getText().split("/");
-					dataFim = LocalDate.of(Integer.parseInt(camposDaDataFim[2]),
-							Integer.parseInt(camposDaDataFim[1]),
-							Integer.parseInt(camposDaDataFim[0]));
+					if (!edtDataInicio.getText().equals("__/__/__")) {
+						dataFim = null;
+					} else {
+						camposDaDataFim = edtDataFim.getText().split("/");
+						dataFim = LocalDate.of(Integer.parseInt(camposDaDataFim[2]),
+								Integer.parseInt(camposDaDataFim[1]),
+								Integer.parseInt(camposDaDataFim[0]));
+					}
 				} catch (Exception e2) {
 					throw new IllegalArgumentException("A data de fim inserida é inválida");
 				}
