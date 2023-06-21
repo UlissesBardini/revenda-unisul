@@ -42,12 +42,22 @@ public class ClienteService {
 		String cpfPattern = "(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}";
 		Preconditions.checkArgument(cliente.getCpf().matches(cpfPattern), 
 					"O CPF do cliente é invalido");
+		Cliente clienteCpf = repository.findByCpf(cliente.getCpf());
+		if (clienteCpf != null) {			
+			Preconditions.checkArgument(clienteCpf.getId().equals(cliente.getId()),
+					"O CPF '" + cliente.getCpf() + "' já está associado a outro cliente");
+		}
 	}
 	
 	private void validarTelefone(Cliente cliente) {
 		String telefonePattern = "\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}";
 		Preconditions.checkArgument(cliente.getTelefone().matches(telefonePattern), 
 					"O telefone do cliente é inválido");
+		Cliente clienteTelefone = repository.findByTelefone(cliente.getTelefone());
+		if (clienteTelefone != null) {			
+			Preconditions.checkArgument(clienteTelefone.getId().equals(cliente.getId()),
+					"O Telefone '" + cliente.getTelefone() + "' já está associado a outro cliente");
+		}
 	}
 	
 	private void validarIdade(Cliente cliente) {

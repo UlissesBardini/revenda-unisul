@@ -47,12 +47,22 @@ public class ColaboradorService {
 		String cpfPattern = "(?:[0-9]{3}\\.){2}[0-9]{3}-[0-9]{2}";
 		Preconditions.checkArgument(colaborador.getCpf().matches(cpfPattern), 
 					"O CPF do colaborador é invalido");
+		Colaborador colaboradorCpf = repository.findByCpf(colaborador.getCpf());
+		if (colaboradorCpf != null) {			
+			Preconditions.checkArgument(colaboradorCpf.getId().equals(colaborador.getId()),
+					"O CPF '" + colaborador.getCpf() + "' já está associado a outro colaborador");
+		}
 	}
 	
 	private void validarTelefone(Colaborador colaborador) {
 		String telefonePattern = "\\([0-9]{2}\\)[0-9]{5}-[0-9]{4}";
 		Preconditions.checkArgument(colaborador.getTelefone().matches(telefonePattern), 
 					"O telefone do colaborador é inválido");
+		Colaborador colaboradorTelefone = repository.findByTelefone(colaborador.getTelefone());
+		if (colaboradorTelefone != null) {			
+			Preconditions.checkArgument(colaboradorTelefone.getId().equals(colaborador.getId()),
+					"O Telefone '" + colaborador.getTelefone() + "' já está associado a outro colaborador");
+		}
 	}
 	
 	private void validarIdade(Colaborador colaborador) {

@@ -21,4 +21,8 @@ public interface ClientesRepository extends JpaRepository<Cliente, Integer> {
 			+ "FROM Cliente c ")
 	public List<Cliente> listarTodos();
 	
+	public Cliente findByCpf(String cpf);
+	
+	public Cliente findByTelefone(String cpf);
+	
 }

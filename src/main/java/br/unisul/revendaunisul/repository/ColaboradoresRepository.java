@@ -31,6 +31,10 @@ public interface ColaboradoresRepository extends JpaRepository<Colaborador, Inte
 			+ "WHERE c.usuario = :usuario")
 	public Colaborador buscarPor(@Param("usuario") Usuario usuario);
 
+	public Colaborador findByCpf(String cpf);
+	
+	public Colaborador findByTelefone(String cpf);
+	
 	@Query("SELECT c "
 			+ "FROM Colaborador c")
 	public List<Colaborador> listarTodos();

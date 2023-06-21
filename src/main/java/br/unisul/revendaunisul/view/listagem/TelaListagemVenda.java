@@ -65,7 +65,7 @@ public class TelaListagemVenda extends JFrame {
 
 			try {
 				try {
-					if (!edtDataInicio.getText().equals("__/__/__")) {
+					if (edtDataInicio.getText().equals("__/__/__")) {
 						dataInicio = null;
 					} else {
 						camposDaDataInicio = edtDataInicio.getText().split("/");
@@ -77,7 +77,7 @@ public class TelaListagemVenda extends JFrame {
 					throw new IllegalArgumentException("A data de início inserida é inválida");
 				}
 				try {
-					if (!edtDataInicio.getText().equals("__/__/__")) {
+					if (edtDataInicio.getText().equals("__/__/__")) {
 						dataFim = null;
 					} else {
 						camposDaDataFim = edtDataFim.getText().split("/");
